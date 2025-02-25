@@ -8,9 +8,9 @@
   
     <div class="nav-links">
         <a href="/navbarbanner"><b>Home</b></a>
-        <a href="#about"><b>Galery</b></a>
-        <a href="#gallery"><b>More</b></a>
-        <a href="#contact"><b>Contact</b></a>
+        <a href="/gallery"><b>Gallery</b></a>
+        <a href="#banner"><b>More</b></a>
+        <a href="/contact"><b>Contact</b></a>
         <div class="dropdown">
             <button class="dropbtn">
                 <span class="dropdown-icon">&#x25BC;</span>
