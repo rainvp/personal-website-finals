@@ -94,8 +94,8 @@ export default {
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  margin-bottom: 50px;
-  padding: 20px;
+  margin-bottom: 35px;
+  padding: 15px;
   background: #f4e4d7;
   font-family: 'Press Start 2P', cursive;
   border: 8px solid #8b5e3c;
@@ -120,7 +120,7 @@ h2 {
 
 /* --- 2. Guest Form & Guest Box Styling (Pixel Art Look) --- */
 .guest-form{
-  width: 48%;
+  width: 50%;
   margin: 20px;
   background: #d2b48c;
   padding: 15px;
@@ -131,7 +131,7 @@ h2 {
 }
 
 .guest-box {
-  width: 48%;
+  width: 50%;
   margin: 20px;
   background: #d2b48c;
   padding: 15px;
@@ -168,16 +168,27 @@ input, textarea {
   box-shadow: 4px 4px 0px #5e3d2b;
 }
 
-/* Retro Button Click Effect */
-input:active {
-  transform: translate(3px, 3px);
+/* Push-up effect */
+input:focus {
+  outline: none;
+  transform: translateY(-3px);
   box-shadow: 2px 2px 0px #5e3d2b;
+  margin-bottom: 16px; /* Slightly increases spacing below */
 }
 
-/* Retro Button Click Effect */
-textarea:active {
-  transform: translate(3px, 3px);
+textarea:focus {
+  outline: none;
+  transform: translateY(-3px);
   box-shadow: 2px 2px 0px #5e3d2b;
+  margin-bottom: 16px; /* Slightly increases spacing below */
+}
+/* Adjust margin of the next sibling to push it back */
+input:focus + textarea {
+  margin-top: -8px;
+}
+
+textarea:focus + button {
+  margin-top: -8px;
 }
 
 /* --- 4. Pixel-Style Button --- */
