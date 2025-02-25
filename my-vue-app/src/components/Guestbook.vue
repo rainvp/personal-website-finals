@@ -119,7 +119,7 @@ h2 {
 }
 
 /* --- 2. Guest Form & Guest Box Styling (Pixel Art Look) --- */
-.guest-form, .guest-box {
+.guest-form{
   width: 48%;
   margin: 20px;
   background: #d2b48c;
@@ -128,6 +128,32 @@ h2 {
   border: 4px solid #8b5e3c;
   box-shadow: 6px 6px 0px #5e3d2b;
   position: relative;
+}
+
+.guest-box {
+  width: 48%;
+  margin: 20px;
+  background: #d2b48c;
+  padding: 15px;
+  border: 4px solid #8b5e3c;
+  box-shadow: 6px 6px 0px #5e3d2b;
+  position: relative;
+  max-height: 300px; /* Adjust height as needed */
+  overflow-y: auto; /* Enables scrolling inside the box */
+}
+
+/* Hide scrollbar in WebKit browsers but still allow scrolling */
+.guest-box::-webkit-scrollbar {
+  width: 8px;
+}
+
+.guest-box::-webkit-scrollbar-thumb {
+  background-color: #8b5e3c;
+  border-radius: 4px;
+}
+
+.guest-box::-webkit-scrollbar-track {
+  background: #d2b48c;
 }
 
 /* --- 3. Input & Textarea with Pixel Borders --- */
@@ -140,6 +166,18 @@ input, textarea {
   background: #fff8dc;
   outline: none;
   box-shadow: 4px 4px 0px #5e3d2b;
+}
+
+/* Retro Button Click Effect */
+input:active {
+  transform: translate(3px, 3px);
+  box-shadow: 2px 2px 0px #5e3d2b;
+}
+
+/* Retro Button Click Effect */
+textarea:active {
+  transform: translate(3px, 3px);
+  box-shadow: 2px 2px 0px #5e3d2b;
 }
 
 /* --- 4. Pixel-Style Button --- */
