@@ -458,22 +458,23 @@ p {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    background: #fae2cf;
     padding: 1.2rem;
-    border: 2px solid #e0a899;
   }
   
   .comment-form input,
   .comment-form textarea {
     width: 100%;
     padding: 12px;
+    font-family: inherit;
     border: 2px solid #c98b72;
-    border-radius: 8px;
+    border-radius: 3px;
     font-size: 1rem;
     background: #fffaf5;
     color: #4a3f35;
+    box-shadow: 4px 4px 0px #5e3d2b;
   }
   
+
   .comment-form textarea {
     resize: none;
     min-height: 100px;
@@ -483,19 +484,40 @@ p {
     padding: 12px;
     background: #c48d74;
     color: white;
-    font-size: 1rem;
+    font-size: 12px;
+    font-family: 'Press Start 2P';
+    letter-spacing: 2px;
     border: none;
-    border-radius: 8px;
+    text-transform: uppercase;
+    border-radius: 3px;
     cursor: pointer;
     transition: 0.3s;
+    cursor: pointer;
     font-weight: bold;
+    transition: transform 0.1s;
+    box-shadow: 4px 4px 0px #5e3d2b;
   }
-  
-  .comment-form button:hover {
-    background: #ea9c9c;
-    transform: scale(1.01);
-  }
-  
+
+/* Push-up effect */
+.comment-form input:focus,
+.comment-form textarea:focus {
+  outline: none;
+  transform: translateY(-3px);
+  box-shadow: 2px 2px 0px #5e3d2b;
+  margin-bottom: 16px; /* Slightly increases spacing below */
+}
+
+/* Adjust margin of the next sibling to push it back */
+.comment-form input:focus + textarea,
+.comment-form textarea:focus + button {
+  margin-top: -8px;
+}
+/* Retro Button Click Effect */
+.comment-form button:active {
+  transform: translate(3px, 3px);
+  box-shadow: 2px 2px 0px #5e3d2b;
+}
+
   /* Comments List */
   .comments-list {
     margin-top: 1.5rem;
