@@ -43,11 +43,222 @@
         <div id="banner-content" class="row clearfix">
             <div class="col-38">
                 <div class="section-heading">
-                    <h1>Steamed & Skilled</h1>
+                    <h1>Capture & Connect</h1>
                 </div>
             </div>
         </div>
     </header>
 
+<!-- Section Title (Properly Positioned) -->
+
+<!-- Gallery Container -->
+<div class="gallery-container"> 
+  <h5 class="tag">Camera Crumbs 📸🍪</h5>
+  <div class="gallery-slider">
+    <button class="slider-nav left-arrow" @click="prevSlide">&#10094;</button>
+    <div class="slider-images-wrapper">
+      <div v-for="image in currentImages" :key="image.id" class="slider-image">
+        <img :src="image.src" class="gallery-img" />
+      </div>
+    </div>
+    <button class="slider-nav right-arrow" @click="nextSlide">&#10095;</button>
+  </div>
+
+  <!-- Caption Below the Slider -->
+  <div class="slider-caption">
+    <p>{{ currentCaption }}</p>
+  </div>
+</div>
+
+<div id="app">
+    <div id="app-comments" class="comments-section">
+      <h2 class="section-title">Share your thoughts!💬</h2>
+
+      <!-- Comment Form -->
+      <form @submit.prevent="addComment" class="comment-form">
+        <input v-model="newComment.name" type="text" placeholder="Your Name" required />
+        <textarea v-model="newComment.comment" placeholder="Write a comment..." required></textarea>
+        <button type="submit">Post Comment</button>
+      </form>
+
+      <!-- Comments List -->
+      <div class="comments-list">
+        <div v-for="comment in comments" :key="comment.id" class="comment-box">
+          <p><strong>{{ comment.name }}</strong>: {{ comment.comment }}</p>
+          <span>{{ formatTimestamp(comment.created_at) }}</span>
+
+          <!-- Reactions -->
+          <div class="reactions">
+            <button @click="toggleReaction(comment.id, 'laughs')">
+              😂 <span>{{ comment.reactions.laughs }}</span>
+            </button>
+            <button @click="toggleReaction(comment.id, 'loves')">
+              ❤️ <span>{{ comment.reactions.loves }}</span>
+            </button>
+            <button @click="toggleReaction(comment.id, 'dislikes')">
+              👎 <span>{{ comment.reactions.dislikes }}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </template>
+
+<script>
+
+import { createClient } from '@supabase/supabase-js';
+import { onMounted, ref, computed } from 'vue';
+
+const supabaseUrl = 'https://kbhnxlrhbxamkgwyqpjn.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtiaG54bHJoYnhhbWtnd3lxcGpuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg0Njc3NzEsImV4cCI6MjA1NDA0Mzc3MX0.lCXlrIXQaw3BvkzR9SBLGuxXnDAIscdkzcUpnn0KR-8';
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+export default {
+  setup() {
+    // Comment Section
+    const comments = ref([]);
+    const newComment = ref({ name: '', comment: '' });
+
+    const fetchComments = async () => {
+      let { data, error } = await supabase
+        .from('comments')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (!error) {
+        comments.value = data.map(comment => ({
+          ...comment,
+          reactions: loadReactions(comment.id),
+        }));
+      }
+    };
+
+    const addComment = async () => {
+      if (!newComment.value.name || !newComment.value.comment) return;
+
+      let { data, error } = await supabase
+        .from('comments')
+        .insert([
+          {
+            name: newComment.value.name,
+            comment: newComment.value.comment,
+            created_at: new Date().toISOString(),
+          }
+        ])
+        .select('*');
+
+      if (!error && data.length > 0) {
+        let newCommentData = { 
+          ...data[0], 
+          reactions: { laughs: 0, loves: 0, dislikes: 0 } 
+        };
+        comments.value.unshift(newCommentData);
+        newComment.value = { name: '', comment: '' };
+      }
+    };
+
+    const loadReactions = (commentId) => {
+      return {
+        laughs: parseInt(localStorage.getItem(`reaction_${commentId}_laughs`)) || 0,
+        loves: parseInt(localStorage.getItem(`reaction_${commentId}_loves`)) || 0,
+        dislikes: parseInt(localStorage.getItem(`reaction_${commentId}_dislikes`)) || 0,
+      };
+    };
+
+    const toggleReaction = (commentId, reactionType) => {
+      const key = `reaction_${commentId}_${reactionType}`;
+      const hasReacted = localStorage.getItem(key);
+
+      comments.value = comments.value.map(comment => {
+        if (comment.id === commentId) {
+          if (hasReacted) {
+            comment.reactions[reactionType] = Math.max(0, comment.reactions[reactionType] - 1);
+            localStorage.removeItem(key);
+          } else {
+            comment.reactions[reactionType] += 1;
+            localStorage.setItem(key, 'true');
+          }
+        }
+        return comment;
+      });
+    };
+
+    const formatTimestamp = (timestamp) => {
+      return timestamp ? new Date(timestamp).toLocaleString() : "Unknown time";
+    };
+
+    onMounted(() => {
+      fetchComments();
+
+      supabase
+        .channel('comments')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'comments' }, (payload) => {
+          let newComment = { ...payload.new, reactions: { laughs: 0, loves: 0, dislikes: 0 } };
+          comments.value.unshift(newComment);
+        })
+        .subscribe();
+    });
+
+    // Gallery Section
+    const images = ref([
+      { id: 1, src: 'https://github.com/rainvp/Personal-Profile-Webpage/blob/main/images/460961978_967543388415623_4541161538742405339_n.jpg?raw=true' },
+      { id: 2, src: 'https://github.com/rainvp/Personal-Profile-Webpage/blob/main/images/472789858_1157284476015373_4532978188250656890_n.jpg?raw=true' },
+      { id: 3, src: 'https://github.com/rainvp/Personal-Profile-Webpage/blob/main/images/472478541_1393676961599516_8296656406198264170_n.jpg?raw=true' },
+      { id: 4, src: 'https://github.com/rainvp/Personal-Profile-Webpage/blob/main/images/363829702_970044974249532_9015369949003698015_n.jpg?raw=true' },
+      { id: 5, src: 'https://raw.githubusercontent.com/rainvp/Personal-Profile-Webpage/refs/heads/main/images/4ebab79f-86d0-41ab-b557-e37c20843d4b.jfif' },
+      { id: 6, src: 'https://github.com/rainvp/Personal-Profile-Webpage/blob/main/images/472699294_466149492989920_1496860658682248426_n.jpg?raw=true' },
+      { id: 7, src: 'https://github.com/rainvp/Personal-Profile-Webpage/blob/main/images/8DD1B940-891E-44AA-BFCC-A3BE20992CDB.jpg?raw=true' },
+      { id: 8, src: 'https://github.com/rainvp/Personal-Profile-Webpage/blob/main/images/af29de30-95ab-420c-90d6-6d6e91d783d3.jpg?raw=true' },
+      { id: 9, src: 'https://github.com/rainvp/Personal-Profile-Webpage/blob/main/images/IMG_3543%20(2).JPG?raw=true' },
+    ]);
+
+    const captions = ref([
+      'Slide 1: Welcome to the gallery!',
+      'Slide 2: Highlights of the journey.',
+      'Slide 3: Moments captured in time.',
+    ]);
+
+    const currentIndex = ref(0);
+    const itemsPerSlide = 3;
+
+    const currentImages = computed(() => {
+      const start = currentIndex.value * itemsPerSlide;
+      return images.value.slice(start, start + itemsPerSlide);
+    });
+
+    const currentCaption = computed(() => captions.value[currentIndex.value] || '');
+
+    const prevSlide = () => {
+      currentIndex.value = (currentIndex.value === 0)
+        ? Math.floor(images.value.length / itemsPerSlide) - 1
+        : currentIndex.value - 1;
+    };
+
+    const nextSlide = () => {
+      currentIndex.value = ((currentIndex.value + 1) * itemsPerSlide >= images.value.length)
+        ? 0
+        : currentIndex.value + 1;
+    };
+
+    return {
+      // Comments
+      comments,
+      newComment,
+      addComment,
+      toggleReaction,
+      formatTimestamp,
+
+      // Gallery
+      images,
+      captions,
+      currentIndex,
+      currentImages,
+      currentCaption,
+      prevSlide,
+      nextSlide,
+    };
+  }
+};
+</script>
