@@ -1,7 +1,7 @@
 <template>
 
-<br></br>
-<br></br>
+<br>
+<br>
 <div class="guest-section" data-aos="zoom-in">
         <h2 class="tag">Leave a little trace of yourself, like coffee rings on a well-loved table.☕✨</h2>
         <div class="guest-container">

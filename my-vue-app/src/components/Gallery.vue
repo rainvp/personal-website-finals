@@ -37,6 +37,8 @@
           </div>
       </div> 
     </nav>
+
+    <br>
   
     <!-- Banner Section -->
     <header id="banner">
@@ -52,7 +54,7 @@
 <!-- Section Title (Properly Positioned) -->
 
 <!-- Gallery Container -->
-<div class="gallery-container"> 
+<div class="gallery-container" data-aos="fade-up">
   <h5 class="tag">Camera Crumbs 📸🍪</h5>
   <div class="gallery-slider">
     <button class="slider-nav left-arrow" @click="prevSlide">&#10094;</button>
@@ -70,8 +72,11 @@
   </div>
 </div>
 
+<br>
+<br>
+
 <div id="app">
-    <div id="app-comments" class="comments-section">
+    <div id="app-comments" class="comments-section" data-aos="zoom-in-up">
       <h2 class="section-title">Share your thoughts!💬</h2>
 
       <!-- Comment Form -->
@@ -103,6 +108,17 @@
       </div>
     </div>
   </div>
+
+  <footer class="footer">
+  <div class="footer-content">
+    <p> 2025 Rain's Café. All rights reserved.</p>
+    <div class="social-icons">
+      <a href="#"><i class="fab fa-facebook"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+    </div>
+  </div>
+</footer>
 
 </template>
 
