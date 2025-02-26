@@ -9,30 +9,37 @@
                 <h2>Sign the Guestbook</h2>
                 <form @submit.prevent="addGuest">
                   <input v-model="name" type="text" placeholder="Your Name" required />
-                  <input v-model="email" type="email" placeholder="Your Email" required />
+                  <input v-model="email" type="email" placeholder="Your Email (optional)">
                   <textarea v-model="message" placeholder="Say something (optional)"></textarea>
                   <button type="submit">Submit</button>
                 </form>
             </div>
-            <div class="guest-box">
+
+
+            <div class="guest-box" ref="guestListRef"> 
                 <h2>Guestbook</h2>
-                <ul>
-                    <li v-for="(guest, index) in guests" :key="index" class="guest-entry" :class="{'sparkle': guest.sparkle}">
-                        <strong>{{ guest.name }}</strong>
-                        <p v-if="guest.message">{{ guest.message }}</p>
-                    </li>
-                </ul>
+                <ul ref="guestListRef">
+  <li 
+    v-for="(guest, index) in guests" 
+    :key="index" 
+    class="guest-entry" 
+    :class="{'sparkle': guest.sparkle}"
+  >
+    <strong>{{ guest.name }}</strong>
+    <p v-if="guest.message">{{ guest.message }}</p>
+  </li>
+</ul>
+
             </div>
         </div>
     </div>
   </template>
   
   <script>
-import { ref, onMounted } from 'vue';
-import { createClient } from '@supabase/supabase-js';
-
-// Supabase setup
-const supabase = createClient('https://your-project.supabase.co', 'your-anon-key');
+import { ref, onMounted, nextTick } from 'vue';
+import supabase from '../lib/supabaseClient';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 export default {
   setup() {
@@ -40,54 +47,71 @@ export default {
     const email = ref('');
     const message = ref('');
     const guests = ref([]);
+    const guestListRef = ref(null); // Reference to the guest list container
 
-    // Fetch guests from Supabase
     const fetchGuests = async () => {
       try {
         const { data, error } = await supabase
           .from('guestbook')
-          .select('name, message'); // Exclude email from selection
+          .select('name, message'); // Exclude email for privacy
+
         if (error) throw error;
-        guests.value = data;
+
+        console.log('Fetched guests from Supabase:', data); // Debugging
+        guests.value = [...data]; // Force reactivity update
+
       } catch (err) {
         console.error('Error fetching guests:', err.message);
       }
     };
 
-    // Add a new guest entry
     const addGuest = async () => {
-    if (!name.value.trim() || !email.value.trim()) return; // Prevent empty entries
+  if (!name.value.trim()) return; // Only require a name
 
-    try {
-        const { data, error } = await supabase.from('guestbook').insert([
-            { name: name.value, email: email.value, message: message.value }
-        ]);
-        if (error) throw error;
+  try {
+    const { data, error } = await supabase.from('guestbook').insert([
+      {
+        name: name.value,
+        email: email.value.trim() || null, // Stores null if empty
+        message: message.value
+      }
+    ]);
+    if (error) throw error;
 
-        guests.value.push({ name: name.value, message: message.value, sparkle: true });
+    guests.value.push({ name: name.value, message: message.value, sparkle: true });
 
-        setTimeout(() => {
-            guests.value[guests.value.length - 1].sparkle = false;
-        }, 1000);
+    await nextTick(); // Wait for DOM update
 
-        name.value = '';
-        email.value = '';
-        message.value = '';
-    } catch (err) {
-        console.error('Error adding guest:', err.message);
+    // Auto-scroll only within guest-box
+    const guestList = guestListRef.value;
+    if (guestList) {
+      guestList.scrollTop = guestList.scrollHeight; // Scroll to the bottom of guest-box
     }
+
+    // Remove sparkle effect after 1s
+    setTimeout(() => {
+      guests.value[guests.value.length - 1].sparkle = false;
+    }, 1000);
+
+    name.value = '';
+    email.value = ''; // Reset email field
+    message.value = '';
+  } catch (err) {
+    console.error('Error adding guest:', err.message);
+  }
 };
 
     // Fetch guests when the component is mounted
     onMounted(() => {
-      AOS.init(); // Initialize AOS animations
-      document.querySelector('.guest-section')?.classList.add('pixel-bounce');
-      fetchGuests();
+      AOS.init(); // Initialize AOS animations properly
+      fetchGuests(); // Ensure guestbook entries load correctly
     });
 
-    return { name, email, message, guests, addGuest };
+    return { name, email, message, guests, addGuest, guestListRef };
   }
 };
+
+
 </script>
 
   
@@ -141,7 +165,7 @@ h2 {
   border: 4px solid #8b5e3c;
   box-shadow: 6px 6px 0px #5e3d2b;
   position: relative;
-  max-height: 300px; /* Adjust height as needed */
+  max-height: 350px; /* Adjust height as needed */
   overflow-y: auto; /* Enables scrolling inside the box */
 }
 
@@ -221,25 +245,58 @@ button:active {
 }
 
 .guest-entry {
-  background: #fff8dc;
-  padding: 12px;
-  margin: 5px 0;
-  border: 3px solid #8b5e3c;
-  box-shadow: 4px 4px 0px #5e3d2b;
-  font-size: 14px;
+  background: #fff8dc; /* Warm background */
+  padding: 10px; /* Slightly more padding for overall content */
+  margin: 8px 0;
+  border: 3px solid #8b5e3c; /* Brown border */
+  box-shadow: 4px 4px 0px #5e3d2b; /* Vintage-style shadow */
+  font-size: 16px; 
+  position: relative;
+  display: flex;
+  flex-direction: column; /* Stack content vertically */
+  gap: 5px; /* Space between elements */
+}
+
+.guest-entry strong {
+  font-size: 14px; /* Slightly larger for names */
+  font-weight: bold;
+  padding: 0; /* Remove excess padding */
+  margin: 0; /* Reset margins */
+}
+
+.guest-entry p {
+  font-size: 15px; /* A little smaller for messages */
+  font-family: cursive; /* Stylish handwriting effect */
+  color: #555;
+  margin: 0; /* Reset margin */
+}
+
+
+
+/* --- 6. Sparkle Animation (More Pixelated Look) --- */
+.sparkle {
   position: relative;
 }
 
-/* --- 6. Sparkle Animation (More Pixelated Look) --- */
-.sparkle::after {
+.sparkle::after,
+.sparkle::before {
   content: '✨';
   position: absolute;
-  top: -12px;
-  right: -12px;
-  animation: sparkle 1s infinite alternate;
-  font-size: 16px;
+  font-size: 55px;
   text-shadow: 2px 2px 0px #ffdf70;
+  animation: sparkle 1s infinite alternate;
 }
+
+.sparkle::after {
+  top: -12px;
+  right: -12px; /* Top right corner */
+}
+
+.sparkle::before {
+  bottom: -12px;
+  left: -12px; /* Bottom left corner */
+}
+
 
 /* --- 7. Responsive Tweaks --- */
 @media (max-width: 768px) {
