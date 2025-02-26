@@ -8,8 +8,8 @@
     
       <div class="nav-links">
           <a href="/navbarbanner"><b>Home</b></a>
-          <a href="#banner"><b>Gallery</b></a>
           <a href="/resume"><b>More</b></a>
+          <a href="#banner"><b>Gallery</b></a>
           <a href="/contact"><b>Contact</b></a>
           <div class="dropdown">
               <button class="dropbtn">

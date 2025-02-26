@@ -8,8 +8,8 @@
   
     <div class="nav-links">
         <a href="/navbarbanner"><b>Home</b></a>
-        <a href="/gallery"><b>Gallery</b></a>
         <a href="#banner"><b>More</b></a>
+        <a href="/gallery"><b>Gallery</b></a>
         <a href="/contact"><b>Contact</b></a>
         <div class="dropdown">
             <button class="dropbtn">
@@ -121,7 +121,7 @@
   <div class="showcase-card-title">Leadership & Team Collaboration</div>
   <div class="showcase-card-content">
     <ul>
-      <li>🔹 <strong>UI/UX Prototyping Lead</strong> – Led a team in designing an interactive Figma prototype, ensuring a seamless user experience with intuitive design principles.</li>
+      <li>🔹 <strong>UI/UX Prototyping Lead</strong> – Co-led a team in designing an interactive Figma prototype, ensuring a seamless user experience with intuitive design principles.</li>
     </ul>
   </div>
 </div>
@@ -139,7 +139,7 @@
   <div class="showcase-card-title">Content Creation & Digital Presence</div>
   <div class="showcase-card-content">
     <ul>
-      <li>🔹 <strong>Client Content Creation</strong> – Produced engaging digital content tailored to brand identity, enhancing audience engagement and online reach.</li>
+      <li>🔹 <strong>Client Content Creation</strong> – Produced engaging digital content to establish brand identity, enhancing audience engagement and online reach.</li>
       <li>🔹 <strong>Personal Content Creation</strong> – Growing as a beauty and makeup content creator on TikTok, experimenting with creative strategies to connect with audiences.</li>
     </ul>
   </div>

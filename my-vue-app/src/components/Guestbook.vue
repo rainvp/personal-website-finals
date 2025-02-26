@@ -8,9 +8,10 @@
             <div class="guest-form">
                 <h2>Sign the Guestbook</h2>
                 <form @submit.prevent="addGuest">
-                    <input v-model="name" type="text" placeholder="Your Name" required />
-                    <textarea v-model="message" placeholder="Say something (optional)"></textarea>
-                    <button type="submit">Submit</button>
+                  <input v-model="name" type="text" placeholder="Your Name" required />
+                  <input v-model="email" type="email" placeholder="Your Email" required />
+                  <textarea v-model="message" placeholder="Say something (optional)"></textarea>
+                  <button type="submit">Submit</button>
                 </form>
             </div>
             <div class="guest-box">
@@ -36,13 +37,16 @@ const supabase = createClient('https://your-project.supabase.co', 'your-anon-key
 export default {
   setup() {
     const name = ref('');
+    const email = ref('');
     const message = ref('');
     const guests = ref([]);
 
     // Fetch guests from Supabase
     const fetchGuests = async () => {
       try {
-        const { data, error } = await supabase.from('guestbook').select('*');
+        const { data, error } = await supabase
+          .from('guestbook')
+          .select('name, message'); // Exclude email from selection
         if (error) throw error;
         guests.value = data;
       } catch (err) {
@@ -52,28 +56,27 @@ export default {
 
     // Add a new guest entry
     const addGuest = async () => {
-      if (!name.value.trim() || !message.value.trim()) return; // Prevent empty entries
+    if (!name.value.trim() || !email.value.trim()) return; // Prevent empty entries
 
-      try {
+    try {
         const { data, error } = await supabase.from('guestbook').insert([
-          { name: name.value, message: message.value }
+            { name: name.value, email: email.value, message: message.value }
         ]);
         if (error) throw error;
 
         guests.value.push({ name: name.value, message: message.value, sparkle: true });
 
-        // Remove sparkle effect after animation
         setTimeout(() => {
-          guests.value[guests.value.length - 1].sparkle = false;
+            guests.value[guests.value.length - 1].sparkle = false;
         }, 1000);
 
-        // Clear input fields
         name.value = '';
+        email.value = '';
         message.value = '';
-      } catch (err) {
+    } catch (err) {
         console.error('Error adding guest:', err.message);
-      }
-    };
+    }
+};
 
     // Fetch guests when the component is mounted
     onMounted(() => {
@@ -82,7 +85,7 @@ export default {
       fetchGuests();
     });
 
-    return { name, message, guests, addGuest };
+    return { name, email, message, guests, addGuest };
   }
 };
 </script>
@@ -250,20 +253,6 @@ button:active {
     margin: 20px;
   }
 }
-
-@keyframes pixel-jump {
-  0% { transform: translateY(0); }
-  25% { transform: translateY(-5px); }
-  50% { transform: translateY(0); }
-  75% { transform: translateY(-3px); }
-  100% { transform: translateY(0); }
-}
-
-[data-aos="pixel-bounce"] {
-  animation: pixelBounce 0.5s ease-in-out;
-}
-
-
 
   </style>
   
