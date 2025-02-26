@@ -123,76 +123,109 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import supabase from '../lib/supabaseClient';
+
 export default {
   setup() {
     // Comment Section
     const comments = ref([]);
     const newComment = ref({ name: '', comment: '' });
 
-    const fetchComments = async () => {
-      let { data, error } = await supabase
-        .from('comments')
-        .select('*')
-        .order('created_at', { ascending: false });
+    // Retrieve stored user email from guestbook
+    const storedEmail = localStorage.getItem("user_email") || null;
 
-      if (!error) {
+    const fetchComments = async () => {
+      try {
+        let { data, error } = await supabase
+          .from('comments')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
         comments.value = data.map(comment => ({
           ...comment,
-          reactions: loadReactions(comment.id),
+          reactions: { laughs: 0, loves: 0, dislikes: 0 }, // Default state
         }));
+
+        // Batch fetch reactions for efficiency
+        await Promise.all(comments.value.map(comment => fetchReactions(comment.id)));
+
+      } catch (err) {
+        console.error("Error fetching comments:", err);
+      }
+    };
+
+    const fetchReactions = async (commentId) => {
+      try {
+        const response = await fetch(`http://localhost:5001/get_reactions?comment_id=${commentId}`);
+        const data = await response.json();
+
+        if (data.reactions) {
+          comments.value = comments.value.map(comment =>
+            comment.id === commentId ? { ...comment, reactions: data.reactions } : comment
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching reactions:", error);
       }
     };
 
     const addComment = async () => {
       if (!newComment.value.name || !newComment.value.comment) return;
 
-      let { data, error } = await supabase
-        .from('comments')
-        .insert([
-          {
-            name: newComment.value.name,
-            comment: newComment.value.comment,
-            created_at: new Date().toISOString(),
-          }
-        ])
-        .select('*');
+      try {
+        let { data, error } = await supabase
+          .from('comments')
+          .insert([
+            {
+              name: newComment.value.name,
+              comment: newComment.value.comment,
+              email: storedEmail, // Attach stored email if available
+              created_at: new Date().toISOString(),
+            }
+          ])
+          .select('*');
 
-      if (!error && data.length > 0) {
-        let newCommentData = { 
-          ...data[0], 
-          reactions: { laughs: 0, loves: 0, dislikes: 0 } 
-        };
-        comments.value.unshift(newCommentData);
-        newComment.value = { name: '', comment: '' };
+        if (!error && data.length > 0) {
+          let newCommentData = {
+            ...data[0],
+            reactions: { laughs: 0, loves: 0, dislikes: 0 }
+          };
+          comments.value.unshift(newCommentData);
+          newComment.value = { name: newComment.value.name, comment: '' }; // Retain name
+        }
+      } catch (error) {
+        console.error("Error adding comment:", error);
       }
     };
 
-    const loadReactions = (commentId) => {
-      return {
-        laughs: parseInt(localStorage.getItem(`reaction_${commentId}_laughs`)) || 0,
-        loves: parseInt(localStorage.getItem(`reaction_${commentId}_loves`)) || 0,
-        dislikes: parseInt(localStorage.getItem(`reaction_${commentId}_dislikes`)) || 0,
-      };
-    };
+    const toggleReaction = async (commentId, reactionType) => {
+      if (!storedEmail) {
+        console.error("User not recognized (not in guestbook)");
+        return;
+      }
 
-    const toggleReaction = (commentId, reactionType) => {
-      const key = `reaction_${commentId}_${reactionType}`;
-      const hasReacted = localStorage.getItem(key);
+      try {
+        const response = await fetch("http://localhost:5001/toggle_reaction", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            comment_id: commentId,
+            reaction_type: reactionType,
+            user_email: storedEmail // Use stored email instead of auth
+          }),
+        });
 
-      comments.value = comments.value.map(comment => {
-        if (comment.id === commentId) {
-          if (hasReacted) {
-            comment.reactions[reactionType] = Math.max(0, comment.reactions[reactionType] - 1);
-            localStorage.removeItem(key);
-          } else {
-            comment.reactions[reactionType] += 1;
-            localStorage.setItem(key, 'true');
-          }
-        }
-        return comment;
-      });
+        const result = await response.json();
+        console.log(result.message);
+
+        // Fetch updated reactions
+        fetchReactions(commentId);
+      } catch (error) {
+        console.error("Error toggling reaction:", error);
+      }
     };
 
     const formatTimestamp = (timestamp) => {
@@ -202,6 +235,7 @@ export default {
     onMounted(() => {
       fetchComments();
 
+      // Subscribe to real-time updates for new comments
       supabase
         .channel('comments')
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'comments' }, (payload) => {
@@ -209,7 +243,19 @@ export default {
           comments.value.unshift(newComment);
         })
         .subscribe();
+
+      // Subscribe to real-time updates for reactions
+      supabase
+        .channel('reactions')
+        .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'reactions' }, (payload) => {
+          fetchReactions(payload.new.comment_id);
+        })
+        .subscribe();
     });
+
+    // Auto-fill name if user already signed guestbook
+    const storedName = localStorage.getItem("user_name") || '';
+    newComment.value.name = storedName;
 
     // Gallery Section
     const images = ref([
@@ -219,9 +265,6 @@ export default {
       { id: 4, src: 'https://github.com/rainvp/Personal-Profile-Webpage/blob/main/images/363829702_970044974249532_9015369949003698015_n.jpg?raw=true' },
       { id: 5, src: 'https://raw.githubusercontent.com/rainvp/Personal-Profile-Webpage/refs/heads/main/images/4ebab79f-86d0-41ab-b557-e37c20843d4b.jfif' },
       { id: 6, src: 'https://github.com/rainvp/Personal-Profile-Webpage/blob/main/images/472699294_466149492989920_1496860658682248426_n.jpg?raw=true' },
-      { id: 7, src: 'https://github.com/rainvp/Personal-Profile-Webpage/blob/main/images/8DD1B940-891E-44AA-BFCC-A3BE20992CDB.jpg?raw=true' },
-      { id: 8, src: 'https://github.com/rainvp/Personal-Profile-Webpage/blob/main/images/af29de30-95ab-420c-90d6-6d6e91d783d3.jpg?raw=true' },
-      { id: 9, src: 'https://github.com/rainvp/Personal-Profile-Webpage/blob/main/images/IMG_3543%20(2).JPG?raw=true' },
     ]);
 
     const captions = ref([
@@ -241,14 +284,14 @@ export default {
     const currentCaption = computed(() => captions.value[currentIndex.value] || '');
 
     const prevSlide = () => {
-      currentIndex.value = (currentIndex.value === 0)
-        ? Math.floor(images.value.length / itemsPerSlide) - 1
+      currentIndex.value = (currentIndex.value === 0) 
+        ? Math.floor(images.value.length / itemsPerSlide) 
         : currentIndex.value - 1;
     };
 
     const nextSlide = () => {
-      currentIndex.value = ((currentIndex.value + 1) * itemsPerSlide >= images.value.length)
-        ? 0
+      currentIndex.value = ((currentIndex.value + 1) * itemsPerSlide >= images.value.length) 
+        ? 0 
         : currentIndex.value + 1;
     };
 
@@ -271,4 +314,5 @@ export default {
     };
   }
 };
+
 </script>

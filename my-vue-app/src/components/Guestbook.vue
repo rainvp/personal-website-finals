@@ -66,40 +66,70 @@ export default {
     };
 
     const addGuest = async () => {
-  if (!name.value.trim()) return; // Only require a name
+      if (!name.value.trim()) return; // Only require a name
 
-  try {
-    const { data, error } = await supabase.from('guestbook').insert([
-      {
-        name: name.value,
-        email: email.value.trim() || null, // Stores null if empty
-        message: message.value
+      try {
+        const { data, error } = await supabase.from('guestbook').insert([
+          {
+            name: name.value,
+            email: email.value.trim() || null, // Stores null if empty
+            message: message.value
+          }
+        ]).select('*'); // Fetch the inserted row
+
+        if (error) throw error;
+
+        if (data.length > 0) {
+          guests.value.push({ name: data[0].name, message: data[0].message, sparkle: true });
+
+          // Store the email in localStorage if provided
+          if (data[0].email) {
+            localStorage.setItem("user_email", data[0].email);
+          }
+        }
+
+        await nextTick(); // Wait for DOM update
+
+        // Auto-scroll only within guest-box
+        const guestList = guestListRef.value;
+        if (guestList) {
+          guestList.scrollTop = guestList.scrollHeight; // Scroll to the bottom of guest-box
+        }
+
+        // Remove sparkle effect after 1s
+        setTimeout(() => {
+          guests.value[guests.value.length - 1].sparkle = false;
+        }, 1000);
+
+        name.value = '';
+        email.value = ''; // Reset email field
+        message.value = '';
+      } catch (err) {
+        console.error('Error adding guest:', err.message);
       }
-    ]);
-    if (error) throw error;
+    };
 
-    guests.value.push({ name: name.value, message: message.value, sparkle: true });
+    const login = async (email, password) => {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
 
-    await nextTick(); // Wait for DOM update
+      if (data.user) {
+        localStorage.setItem("user_email", data.user.email); // Store email in localStorage
+      }
+    };
 
-    // Auto-scroll only within guest-box
-    const guestList = guestListRef.value;
-    if (guestList) {
-      guestList.scrollTop = guestList.scrollHeight; // Scroll to the bottom of guest-box
-    }
+    const signUp = async (email, password) => {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password
+      });
 
-    // Remove sparkle effect after 1s
-    setTimeout(() => {
-      guests.value[guests.value.length - 1].sparkle = false;
-    }, 1000);
-
-    name.value = '';
-    email.value = ''; // Reset email field
-    message.value = '';
-  } catch (err) {
-    console.error('Error adding guest:', err.message);
-  }
-};
+      if (data.user) {
+        localStorage.setItem("user_email", data.user.email); // Store email in localStorage
+      }
+    };
 
     // Fetch guests when the component is mounted
     onMounted(() => {

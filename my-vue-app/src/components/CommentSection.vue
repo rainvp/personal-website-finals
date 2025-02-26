@@ -92,26 +92,53 @@ export default {
       };
     };
 
-    // Toggle reactions (No Supabase)
-    const toggleReaction = (commentId, reactionType) => {
-      const key = `reaction_${commentId}_${reactionType}`;
-      const hasReacted = localStorage.getItem(key);
+    const toggleReaction = async (commentId, reactionType) => {
+  const user = supabase.auth.user();
+  if (!user) {
+    console.error("User is not authenticated");
+    return;
+  }
 
-      comments.value = comments.value.map(comment => {
-        if (comment.id === commentId) {
-          if (hasReacted) {
-            // Undo reaction
-            comment.reactions[reactionType] = Math.max(0, comment.reactions[reactionType] - 1);
-            localStorage.removeItem(key);
-          } else {
-            // Add reaction
-            comment.reactions[reactionType] += 1;
-            localStorage.setItem(key, 'true');
-          }
-        }
-        return comment;
-      });
-    };
+  try {
+    const response = await fetch("http://localhost:5000/toggle_reaction", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ 
+        comment_id: commentId, 
+        reaction_type: reactionType, 
+        user_email: user.email 
+      }),
+    });
+
+    const result = await response.json();
+    console.log(result.message);
+
+    // Fetch updated reactions
+    fetchReactions(commentId);  // ✅ Removed `await` to avoid setup() error
+  } catch (error) {
+    console.error("Error toggling reaction:", error);
+  }
+};
+
+// Fetch reactions
+const fetchReactions = async (commentId) => {
+  const updatedReactions = await getReactionsFromBackend(commentId);
+  comments.value = comments.value.map(comment =>
+    comment.id === commentId ? { ...comment, reactions: updatedReactions } : comment
+  );
+};
+
+// Function to fetch reactions from backend
+const getReactionsFromBackend = async (commentId) => {
+  try {
+    const response = await fetch(`http://localhost:5000/get_reactions?comment_id=${commentId}`);
+    const data = await response.json();
+    return data.reactions || { laughs: 0, loves: 0, dislikes: 0 };
+  } catch (error) {
+    console.error("Error fetching reactions:", error);
+    return { laughs: 0, loves: 0, dislikes: 0 };
+  }
+};
 
     // Format timestamp
     const formatTimestamp = (timestamp) => {
