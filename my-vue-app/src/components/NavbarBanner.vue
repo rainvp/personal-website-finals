@@ -7,10 +7,10 @@
       </div>   
     
       <div class="nav-links">
-          <a href="#banner"><b>Home</b></a>
-          <a href="/resume"><b>More</b></a>
-          <a href="/gallery"><b>Gallery</b></a>
-          <a href="/contact"><b>Contact</b></a>
+      <router-link to="/" class="nav-link"><b>Home</b></router-link>
+      <router-link to="/resume" class="nav-link"><b>More</b></router-link>
+      <router-link to="/gallery" class="nav-link"><b>Gallery</b></router-link>
+      <router-link to="/contact" class="nav-link"><b>Contact</b></router-link>
           <div class="dropdown">
               <button class="dropbtn">
                   <span class="dropdown-icon">&#x25BC;</span>

@@ -2,7 +2,9 @@
   <div>
     <NavbarBanner />
     <Guestbook/>
+    <router-view />
     <Footer />  <!-- Footer is used here -->
+    
     
   </div>
 </template>

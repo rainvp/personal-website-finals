@@ -80,18 +80,26 @@ p {
 }
 
 
-.navbar a {
-    color: #4a3b2b; 
-    font-size: 20px;
-    text-decoration: none; 
-    padding: 10px 25px; 
-    transition: background-color 0.3s ease, color 0.3s ease; 
+.nav-links {
+  display: flex;
+  align-items: center;
 }
 
-.navbar a:hover {
-    background-color: #d4b59b; 
-    color: #fff; 
-    border-radius: 5px;
+/* Ensure both <a> and <router-link> look the same */
+.navbar a, 
+.navbar .nav-link {
+  color: #4a3b2b;
+  font-size: 20px;
+  text-decoration: none;
+  padding: 10px 25px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navbar a:hover, 
+.navbar .nav-link:hover {
+  background-color: #d4b59b;
+  color: #fff;
+  border-radius: 5px;
 }
 
 /* Dropdown styling */

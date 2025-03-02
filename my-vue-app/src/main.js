@@ -5,6 +5,7 @@ import CommentSection from './components/CommentSection.vue';
 import NavbarBanner from './components/NavbarBanner.vue';
 import Guestbook from './components/Guestbook.vue'
 import Footer from './components/Footer.vue'; // Import Footer
+import router from './router';
 
 import './main.css';
 
@@ -19,5 +20,6 @@ app.component('CommentSection', CommentSection);
 app.component('NavbarBanner', NavbarBanner);
 app.component('Guestbook', Guestbook);
 app.component('Footer', Footer); // Register Footer component
+app.use(router)
 
 app.mount('#app');

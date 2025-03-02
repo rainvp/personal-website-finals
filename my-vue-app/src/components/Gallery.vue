@@ -6,12 +6,12 @@
           alt="Rain's Cafe Logo">
       </div>   
     
-      <div class="nav-links">
-          <a href="/navbarbanner"><b>Home</b></a>
-          <a href="/resume"><b>More</b></a>
-          <a href="#banner"><b>Gallery</b></a>
-          <a href="/contact"><b>Contact</b></a>
-          <div class="dropdown">
+  <div class="nav-links">
+      <router-link to="/" class="nav-link"><b>Home</b></router-link>
+      <router-link to="/resume" class="nav-link"><b>More</b></router-link>
+      <router-link to="/gallery" class="nav-link"><b>Gallery</b></router-link>
+      <router-link to="/contact" class="nav-link"><b>Contact</b></router-link>
+    <div class="dropdown">
               <button class="dropbtn">
                   <span class="dropdown-icon">&#x25BC;</span>
               </button>
