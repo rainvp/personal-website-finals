@@ -317,7 +317,7 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
 body, html {
     height: 100%;
     font-family: 'Poppins', sans-serif;
@@ -347,7 +347,6 @@ p {
   color: #5a391f;
   margin-bottom: 2px;
   text-transform: uppercase;
-  font-family: 'Poppins', sans-serif;
   display: flex;
   align-items: center;
   justify-content: center;

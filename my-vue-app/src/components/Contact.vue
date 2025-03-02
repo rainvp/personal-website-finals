@@ -108,7 +108,7 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
 
 body, html {
     height: 100%;
@@ -170,86 +170,91 @@ display: block; /* Ensure proper spacing around the image */
 
 /* Dropdown styling */
 .dropdown {
-position: relative;
-display: inline-block;
+  position: relative;
+  display: inline-block;
 }
 
+/* Dropdown Button */
 .dropbtn {
-background-color: transparent;
-border: none;
-cursor: pointer;
-font-size: 16px;
-color: #4a3b2b;
-padding: 10px 15px;
-transition: color 0.3s ease;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #4a3b2b;
+  padding: 10px 15px;
+  transition: color 0.3s ease;
 }
 
 .dropbtn:hover {
-color: #d4b59b;
+  color: #d4b59b;
 }
 
-/* Dropdown icon */
+/* Dropdown Icon */
 .dropdown-icon {
-font-size: 16px;
-margin-left: 5px;
-transition: transform 0.3s ease; /* Animation for rotation */
+  font-size: 16px;
+  margin-left: 5px;
+  transition: transform 0.3s ease; /* Smooth arrow rotation */
 }
 
-/* Dropdown content */
+/* Dropdown Content */
 .dropdown-content {
-display: none;
-position: absolute;
-right: 0; /* Align dropdown below the icon */
-background-color: #fff;
-box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-z-index: 1;
-min-width: 250px;
-border-radius: 5px;
-opacity: 0;
-visibility: hidden;
-transform: translateY(10px); /* Start with a slight downward position */
-transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease; /* Smooth fade-in and slide-up */
+  position: absolute;
+  right: 0;
+  background-color: #fff;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  min-width: 250px;
+  border-radius: 5px;
+
+  /* Smooth hidden state */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
 }
 
-/* Dropdown sections */
+/* Dropdown Sections */
 .dropdown-section {
-padding: 15px;
-border-bottom: 1px solid #f7e7d1;
+  padding: 15px;
+  border-bottom: 1px solid #f7e7d1;
 }
 
 .dropdown-title {
-font-size: 16px;
-font-weight: bold;
-color: #4a3b2b;
-margin-bottom: 10px;
-text-transform: uppercase; /* Optional: Make titles uppercase for a neat look */
+  font-size: 16px;
+  font-weight: bold;
+  color: #4a3b2b;
+  margin-bottom: 10px;
+  text-transform: uppercase;
 }
 
-/* Dropdown items */
+/* Dropdown Links */
 .dropdown-content a {
-color: #4a3b2b;
-padding: 8px 15px;
-text-decoration: none;
-display: block;
-transition: background-color 0.3s ease;
+  color: #4a3b2b;
+  padding: 8px 15px;
+  text-decoration: none;
+  display: block;
+  transition: background-color 0.3s ease;
 }
 
 .dropdown-content a:hover {
-background-color: #f7e7d1;
+  background-color: #f7e7d1;
 }
 
-/* Show dropdown on hover */
-.dropdown:hover .dropdown-content {
-display: block;
-opacity: 1;
-visibility: visible;
-transform: translateY(0); /* Slide to the original position */
+/* Improved Dropdown Show on Hover */
+.dropdown:hover .dropdown-content,
+.dropdown:focus-within .dropdown-content {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
 }
 
 /* Rotate the arrow when dropdown is open */
-.dropdown:hover .dropdown-icon {
-transform: rotate(180deg); /* Rotate arrow */
+.dropdown:hover .dropdown-icon,
+.dropdown:focus-within .dropdown-icon {
+  transform: rotate(180deg);
 }
+
+
 
 /* Responsive Design */
 @media screen and (max-width: 768px) {

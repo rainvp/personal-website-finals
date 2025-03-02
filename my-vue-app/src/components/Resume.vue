@@ -50,7 +50,7 @@
   </header>
 
 <div class="resume-container" data-aos="fade-up">
-  <h2 class="tag">From Books to Bytes</h2>
+  <h5 class="tag">From Books to Bytes</h5>
   <div class="card" data-aos="fade-up">
       <i class="fas fa-university school-icon"></i>
       <div class="school-name">Asia Pacific College</div>
@@ -91,7 +91,7 @@
 </div>
 
 <section class="skills-section">
-    <h2 class="tag" data-aos="fade-up">Barista's Tools</h2>
+    <h5 class="tag" data-aos="fade-up">Barista's Tools</h5>
 
     <div class="teapot-container" data-aos="fade-up">
       <div class="teapot" :class="{ tilt: isPouring }"></div>
@@ -209,7 +209,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 body, html {
     height: 100%;
     font-family: 'Poppins';
@@ -495,34 +495,37 @@ transform: rotate(180deg); /* Rotate arrow */
 }
 
 .tag {
-  max-width: 1300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 25px; /* Spacing above and below the tag */
-    font-size: 1.5rem; /* Adjust text size */
-    font-weight: bold;
-    color: #4a3b2b; /* Coffee-inspired color */
-    text-transform: uppercase; /* Make the text all caps */
-    letter-spacing: 2px; /* Add some spacing between letters */
-    position: relative; /* For positioning the lines */
+  width: 100%;
+  font-size: 28px;
+  font-weight: bold;
+  color: #5a391f;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
+  margin-bottom: 25px;
+  font-weight: bold;
+  letter-spacing: 2px; /* Add some spacing between letters */
+  position: relative; /* For positioning the lines */
 }
 
-  .tag::before {
-    content: "";
-    flex: 1; 
-    height: 3px; 
-    flex-grow: 5; /* Makes the lines expand further */
-    background: linear-gradient(to right, #d4b59b, #502917);
-    margin: 0 15px;
+.tag::before {
+  content: "";
+  flex: 1; 
+  height: 3px; 
+  flex-grow: 5; /* Makes the lines expand further */
+  background: linear-gradient(to right, #d4b59b, #502917);
+  margin: 0 15px;
 }
 .tag::after {
-    content: "";
-    flex: 1; 
-    flex-grow: 5; /* Makes the lines expand further */
-    height: 3px; 
-    background: linear-gradient(to left, #d4b59b, #502917); /* Gradient effect */
-    margin: 0 15px;
+  content: "";
+  flex: 1; 
+  flex-grow: 5; /* Makes the lines expand further */
+  height: 3px; 
+  background: linear-gradient(to left, #d4b59b, #502917); /* Gradient effect */
+  margin: 0 15px;
 }
 /* Container with centered cards */
 .resume-container {
