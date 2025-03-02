@@ -316,3 +316,668 @@ export default {
 };
 
 </script>
+
+<style>
+body, html {
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    color: #4a3b2b;
+    background-color: #fcf5e8;
+}
+
+ .menu {
+    display: none;
+ }
+
+ a {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.3s;
+}
+
+p {
+   font-size: 18px;
+}
+
+.tag {
+  width: 100%;
+  font-size: 28px;
+  font-weight: bold;
+  color: #5a391f;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  font-weight: bold;
+  letter-spacing: 2px; /* Add some spacing between letters */
+  position: relative; /* For positioning the lines */
+}
+
+.tag::before {
+  content: "";
+  flex: 1; 
+  height: 3px; 
+  flex-grow: 5; /* Makes the lines expand further */
+  background: linear-gradient(to right, #d4b59b, #502917);
+  margin: 0 15px;
+}
+.tag::after {
+  content: "";
+  flex: 1; 
+  flex-grow: 5; /* Makes the lines expand further */
+  height: 3px; 
+  background: linear-gradient(to left, #d4b59b, #502917); /* Gradient effect */
+  margin: 0 15px;
+}
+
+
+/*--------------------------------------------- Custom Styles------------------------------------------- */
+
+/* ---------------------------------------- Navigation Bar ---------------------------------------------- */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #f7e7d1; 
+    color: #4a3b2b;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    z-index: 1000;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); 
+}
+
+.navbar .logo img {
+    height: 65px; /* Adjust the height of the logo */
+    width: auto; /* Maintain aspect ratio */
+    display: block; /* Ensure proper spacing around the image */
+}
+
+
+.nav-links {
+  display: flex;
+  align-items: center;
+}
+
+/* Ensure both <a> and <router-link> look the same */
+.navbar a, 
+.navbar .nav-link {
+  color: #4a3b2b;
+  font-size: 20px;
+  text-decoration: none;
+  padding: 10px 25px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navbar a:hover, 
+.navbar .nav-link:hover {
+  background-color: #d4b59b;
+  color: #fff;
+  border-radius: 5px;
+}
+
+/* Dropdown styling */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #4a3b2b;
+    padding: 10px 15px;
+    transition: color 0.3s ease;
+}
+
+.dropbtn:hover {
+    color: #d4b59b;
+}
+
+/* Dropdown icon */
+.dropdown-icon {
+    font-size: 16px;
+    margin-left: 5px;
+    transition: transform 0.3s ease; /* Animation for rotation */
+}
+
+/* Dropdown content */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0; /* Align dropdown below the icon */
+    background-color: #fff;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    min-width: 250px;
+    border-radius: 5px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px); /* Start with a slight downward position */
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease; /* Smooth fade-in and slide-up */
+}
+
+/* Dropdown sections */
+.dropdown-section {
+    padding: 15px;
+    border-bottom: 1px solid #f7e7d1;
+}
+
+.dropdown-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #4a3b2b;
+    margin-bottom: 10px;
+    text-transform: uppercase; /* Optional: Make titles uppercase for a neat look */
+}
+
+/* Dropdown items */
+.dropdown-content a {
+    color: #4a3b2b;
+    padding: 8px 15px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-content a:hover {
+    background-color: #f7e7d1;
+}
+
+/* Show dropdown on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0); /* Slide to the original position */
+}
+
+/* Rotate the arrow when dropdown is open */
+.dropdown:hover .dropdown-icon {
+    transform: rotate(180deg); /* Rotate arrow */
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .nav-links a {
+        font-size: 16px;  /* Decrease font size for small screens */
+        padding: 8px 12px;
+    }
+
+    .dropdown-content a {
+        font-size: 14px;  /* Make dropdown text smaller */
+    }
+
+    .dropbtn {
+        font-size: 14px;  /* Adjust dropdown button size */
+        padding: 8px 10px;
+    }
+
+    /* Reduce logo size for small screens */
+    .navbar .logo img {
+        height: 50px;
+    }
+
+    /* Reduce padding of navbar */
+    .navbar {
+        padding: 8px 15px;
+    }
+}
+/* ------------------------------------------------ Banner & Header ---------------------------*/
+#banner {
+    height: 100vh;
+    display: flex;
+    justify-content: flex-start; 
+    align-items: center; 
+    padding-left: 90px;
+    padding-top: 20px;  
+    position: relative;
+    overflow: hidden;
+    background-position: center;
+    background-size: cover;
+    background-image: url("https://i.pinimg.com/originals/07/91/1f/07911f8ccbaa7f0462acd7ac534f020f.gif");
+    min-height: 75%;
+}
+
+/* Optional Gradient Overlay for a softer look */
+#banner:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(241, 179, 121, 0.39), rgba(255, 255, 255, 0.5));
+}
+
+/* Banner content section */
+#banner-content {
+    animation: fadeInLeft 1.5s ease-out;
+    max-width: 50%; /* Restrict the content width */
+    z-index: 2; /* Ensures content is above the background */
+    position: relative;
+    text-align: left;
+}
+
+/* Header styling */
+#banner h1 {
+    font-size: 5em;
+    color:#fffaf5;
+    margin-bottom: 15px;
+    animation: fadeInLeft 1.5s ease-out;
+    font-family: 'Poppins', sans-serif;
+    letter-spacing: 2px; 
+    font-weight: bold;
+    line-height: 1.2;
+}
+
+/* Subheading styling */
+#banner h2 {
+    font-size: 1.8em;
+    margin-bottom: 30px;
+    animation: fadeInLeft 1.5s ease-out;
+    font-style: italic;
+    letter-spacing: 1px;
+    font-family: 'Arial', sans-serif;
+    line-height: 1.5;
+}
+
+/* Button styling */
+#banner .button {
+    background-color: #502917;
+    color: #fff;
+    margin-top: 15px;
+    padding: 22px;
+    text-decoration: none;
+    border-radius: 30px;
+    font-size: 20px;
+    transition: background-color 0.3s, transform 0.3s;
+    position: relative;
+    display: inline-block; 
+    text-align: center;
+}
+
+/* Add hover effect */
+#banner .button:hover {
+    background-color: #6a3d22;
+    transform: scale(1.05); 
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #banner .button {
+        padding: 0.8em 1.5em; /* Adjust padding for smaller screens */
+        font-size: 1rem; /* Adjust font size */
+    }
+}
+
+@media (max-width: 480px) {
+    #banner .button {
+        padding: 0.6em 1em; /* Further adjust for very small screens */
+        font-size: 0.9rem;
+        margin: 0.5em;
+    }
+}
+
+/* Fade-in left animation */
+@keyframes fadeInLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Centering and limiting gallery size */
+.gallery-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1500px;
+  margin: auto;
+  padding: 10px;
+}
+
+/* Gallery slider layout */
+.gallery-slider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 100%;
+  max-width: 1200px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  background-color: #f7e7d1;
+}
+
+/* Image wrapper */
+.slider-images-wrapper {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  width: 100%;
+}
+
+/* Individual image */
+.slider-image {
+  flex: 0 0 calc(100% / 3);
+  max-width: calc(100% / 3);
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Navigation buttons */
+.slider-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 30px;
+  color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: 50%;
+  padding: 8px 12px;
+  cursor: pointer;
+  z-index: 2;
+  user-select: none;
+}
+
+.left-arrow {
+  left: 10px;
+}
+
+.right-arrow {
+  right: 10px;
+}
+
+.slider-nav:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Caption styling */
+.slider-caption {
+  text-align: center;
+  font-size: 14px;
+  color: #551f18;
+  font-family: "Inconsolata", sans-serif;
+  margin-top: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .gallery-slider {
+    max-width: 900px;
+  }
+  .slider-image {
+    flex: 0 0 calc(100% / 2);
+    max-width: calc(100% / 2);
+  }
+}
+
+@media (max-width: 768px) {
+  .gallery-slider {
+    max-width: 600px;
+  }
+  .slider-image {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  .slider-nav {
+    font-size: 24px;
+    padding: 6px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery-slider {
+    max-width: 100%;
+  }
+  .slider-nav {
+    font-size: 20px;
+    padding: 5px 8px;
+  }
+}
+  /* Comments Section */
+  .comments-section {
+    max-width: 1000px;
+    width: 100%;
+    margin: 2rem auto;
+    margin-bottom: 85px;
+    padding: 20px;
+    background: #f4e4d7;
+    font-family: cursive;
+    border: 4px solid #c99f82;
+    box-shadow: 8px 8px 0px #5e3d2b;
+    text-align: center;
+  }
+  
+  /* Title Styling */
+  .comments-section h2 {
+    font-size: 24px;
+    color: #755049;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    font-family: 'Press Start 2P';
+  }
+  
+  /* Comment Form */
+  .comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 1.2rem;
+  }
+  
+  .comment-form input,
+  .comment-form textarea {
+    width: 100%;
+    padding: 12px;
+    font-family: inherit;
+    border: 2px solid #c98b72;
+    border-radius: 3px;
+    font-size: 1rem;
+    background: #fffaf5;
+    color: #4a3f35;
+    box-shadow: 4px 4px 0px #5e3d2b;
+  }
+  
+
+  .comment-form textarea {
+    resize: none;
+    min-height: 100px;
+  }
+  
+  .comment-form button {
+    padding: 12px;
+    background: #c48d74;
+    color: white;
+    font-size: 12px;
+    font-family: 'Press Start 2P';
+    letter-spacing: 2px;
+    border: none;
+    text-transform: uppercase;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: 0.3s;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.1s;
+    box-shadow: 4px 4px 0px #5e3d2b;
+  }
+
+/* Push-up effect */
+.comment-form input:focus,
+.comment-form textarea:focus {
+  outline: none;
+  transform: translateY(-3px);
+  box-shadow: 2px 2px 0px #5e3d2b;
+  margin-bottom: 16px; /* Slightly increases spacing below */
+}
+
+/* Adjust margin of the next sibling to push it back */
+.comment-form input:focus + textarea,
+.comment-form textarea:focus + button {
+  margin-top: -8px;
+}
+/* Retro Button Click Effect */
+.comment-form button:active {
+  transform: translate(3px, 3px);
+  box-shadow: 2px 2px 0px #5e3d2b;
+}
+
+  /* Comments List */
+  .comments-list {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 0 10px;
+  }
+  
+  /* Comment Box */
+  .comment-box {
+    background: #ffeadd;
+    padding: 14px;
+    border-radius: 12px;
+    box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.08);
+    text-align: left;
+    border-left: 4px solid #d3a484;
+    position: relative;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s;
+  }
+  
+  .comment-box:hover {
+    transform: translateY(-3px);
+    box-shadow: 4px 5px 15px rgba(0, 0, 0, 0.12);
+  }
+  
+  .comment-box p {
+    font-size: 1rem;
+    margin: 0;
+  }
+  
+  .comment-box span {
+    font-size: 0.85rem;
+    color: #e08c8c;
+    display: block;
+    margin-top: 6px;
+  }
+  
+  /* Reactions */
+  .reactions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  
+  .reactions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 8px;
+    border-radius: 8px;
+  }
+  
+  .reactions button:hover {
+    background: #ffdfdf;
+    color: #d9534f;
+    transform: scale(1.1);
+  }
+
+    /* ------------------------------ footer ------------------------------*/
+/* Full-Width Footer */
+.footer {
+  width: 100%; /* Ensures the footer spans the full width */
+  background-color: #4a3b2b; /* Matching theme color */
+  color: #fff;
+  text-align: center;
+  padding: 15px 20px;
+  position: relative; /* Avoids unintended shifts */
+}
+
+
+.footer-content {
+  margin: 0 auto; /* Centers the content */
+  padding: 0 20px; /* Adds padding to prevent text from touching edges */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+/* Footer Links */
+.footer a {
+  color: #f7e7d1;
+  text-decoration: none;
+  margin: 0 10px;
+  font-size: 16px;
+}
+
+.footer a:hover {
+  color: #d4b59b; /* Slight hover effect */
+}
+
+/* Social Media Icons */
+.footer .social-icons {
+  display: flex;
+  gap: 15px;
+}
+
+.footer .social-icons a {
+  font-size: 20px;
+}
+
+/* Responsive Footer */
+@media (max-width: 600px) {
+
+  /* Full-Width Footer */
+  .footer {
+  width: 100%; /* Ensures the footer spans the full width */
+  background-color: #4a3b2b; /* Matching theme color */
+  color: #fff;
+  text-align: center;
+  padding: 10px 10px;
+  position: relative; /* Avoids unintended shifts */
+}
+
+.footer-content {
+  margin: 0 auto; /* Centers the content */
+  padding: 10px 10px; /* Adds padding to prevent text from touching edges */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  gap: 10px;
+  
+}
+
+}
+</style>
