@@ -37,7 +37,7 @@ p {
     align-items: center;
     justify-content: center;
     padding: 20px;
-    margin: 40px; /* Spacing above and below the tag */
+    margin: 25px; /* Spacing above and below the tag */
     font-size: 1.5rem; /* Adjust text size */
     font-weight: bold;
     color: #4a3b2b; /* Coffee-inspired color */
@@ -534,11 +534,7 @@ p {
     text-align: center;
   }
   
-  h2 {
-    font-size: 16px;
-    font-family: 'Press Start 2P', cursive;
-  }
-  .tag {
+  .guest-section h2 {
     font-size: 16px;
     font-family: 'Press Start 2P', cursive;
   }

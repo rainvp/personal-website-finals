@@ -164,16 +164,6 @@
 </div>
 </section>
 
-<footer class="footer">
-  <div class="footer-content">
-    <p> 2025 Rain's Café. All rights reserved.</p>
-    <div class="social-icons">
-      <a href="#"><i class="fab fa-facebook"></i></a>
-      <a href="#"><i class="fab fa-instagram"></i></a>
-      <a href="#"><i class="fab fa-twitter"></i></a>
-    </div>
-  </div>
-</footer>
 
 </template>
 
@@ -496,8 +486,6 @@ transform: rotate(180deg); /* Rotate arrow */
       transform: translateX(0);
   }
 }
-
-
 .resume-section {
     width: 100%;
     margin-bottom: 30px;
@@ -507,18 +495,15 @@ transform: rotate(180deg); /* Rotate arrow */
 }
 
 .tag {
-    width: 100%;
-    font-size: 28px;
-    font-weight: bold;
-    color: #5a391f;
-    margin-bottom: 2px;
-    text-transform: uppercase;
-    font-family: 'Poppins', sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 20px;
+    margin: 25px; /* Spacing above and below the tag */
+    font-size: 1.5rem; /* Adjust text size */
     font-weight: bold;
+    color: #4a3b2b; /* Coffee-inspired color */
+    text-transform: uppercase; /* Make the text all caps */
     letter-spacing: 2px; /* Add some spacing between letters */
     position: relative; /* For positioning the lines */
 }
@@ -654,20 +639,22 @@ li {
   }
   
   .pour-button {
-    background-color: #614f41;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 16px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    transition: background 0.3s;
-  }
-  .pour-button:hover {
-    background-color: #6E4932;
-  }
+  background-color: #614f41;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  transition: background 0.3s;
   
+  /* Prevents button from being too long */
+  max-width: 200px;  /* Adjust as needed */
+  width: fit-content;
+  display: block;  /* Prevents it from stretching */
+}
+
   .progress-wrapper {
     display: flex;
     flex-wrap: wrap;
