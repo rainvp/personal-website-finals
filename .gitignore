@@ -1,0 +1,33 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+*.env
+*.venv
+
+# PythonAnywhere logs and configuration files
+*.log
+*.sqlite3
+instance/
+config.py
+
+# Ignore IDE and editor config files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Node.js / Vite build files (if any frontend code exists)
+node_modules/
+dist/
+
+# Ignore Supabase keys (if you later decide to use environment variables)
+.env
+supabase_config.json
+
+# Ignore macOS system files
+.DS_Store
