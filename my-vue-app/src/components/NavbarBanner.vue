@@ -125,8 +125,154 @@
   </div>
 </div>
 
+
+
+<br>
+<br>
+<div class="guest-section" data-aos="zoom-in">
+        <h2 class="tag">Leave a little trace of yourself, like coffee rings on a well-loved table.☕✨</h2>
+        <div class="guest-container">
+            <div class="guest-form">
+                <h2>Sign the Guestbook</h2>
+                <form @submit.prevent="addGuest">
+                  <input v-model="name" type="text" placeholder="Your Name" required />
+                  <input v-model="email" type="email" placeholder="Your Email (optional)">
+                  <textarea v-model="message" placeholder="Say something (optional)"></textarea>
+                  <button type="submit">Submit</button>
+                </form>
+            </div>
+
+
+            <div class="guest-box" ref="guestListRef"> 
+                <h2>Guestbook</h2>
+                <ul ref="guestListRef">
+  <li 
+    v-for="(guest, index) in guests" 
+    :key="index" 
+    class="guest-entry" 
+    :class="{'sparkle': guest.sparkle}"
+  >
+    <strong>{{ guest.name }}</strong>
+    <p v-if="guest.message">{{ guest.message }}</p>
+  </li>
+</ul>
+
+            </div>
+        </div>
+    </div>
         
     </template>
+
+
+
+<script>
+import { ref, onMounted, nextTick } from 'vue';
+import supabase from '../lib/supabaseClient';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
+export default {
+  setup() {
+    const name = ref('');
+    const email = ref('');
+    const message = ref('');
+    const guests = ref([]);
+    const guestListRef = ref(null); // Reference to the guest list container
+
+    const fetchGuests = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('guestbook')
+          .select('name, message'); // Exclude email for privacy
+
+        if (error) throw error;
+
+        console.log('Fetched guests from Supabase:', data); // Debugging
+        guests.value = [...data]; // Force reactivity update
+
+      } catch (err) {
+        console.error('Error fetching guests:', err.message);
+      }
+    };
+
+    const addGuest = async () => {
+      if (!name.value.trim()) return; // Only require a name
+
+      try {
+        const { data, error } = await supabase.from('guestbook').insert([
+          {
+            name: name.value,
+            email: email.value.trim() || null, // Stores null if empty
+            message: message.value
+          }
+        ]).select('*'); // Fetch the inserted row
+
+        if (error) throw error;
+
+        if (data.length > 0) {
+          guests.value.push({ name: data[0].name, message: data[0].message, sparkle: true });
+
+          // Store the email in localStorage if provided
+          if (data[0].email) {
+            localStorage.setItem("user_email", data[0].email);
+          }
+        }
+
+        await nextTick(); // Wait for DOM update
+
+        // Auto-scroll only within guest-box
+        const guestList = guestListRef.value;
+        if (guestList) {
+          guestList.scrollTop = guestList.scrollHeight; // Scroll to the bottom of guest-box
+        }
+
+        // Remove sparkle effect after 1s
+        setTimeout(() => {
+          guests.value[guests.value.length - 1].sparkle = false;
+        }, 1000);
+
+        name.value = '';
+        email.value = ''; // Reset email field
+        message.value = '';
+      } catch (err) {
+        console.error('Error adding guest:', err.message);
+      }
+    };
+
+    const login = async (email, password) => {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (data.user) {
+        localStorage.setItem("user_email", data.user.email); // Store email in localStorage
+      }
+    };
+
+    const signUp = async (email, password) => {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password
+      });
+
+      if (data.user) {
+        localStorage.setItem("user_email", data.user.email); // Store email in localStorage
+      }
+    };
+
+    // Fetch guests when the component is mounted
+    onMounted(() => {
+      AOS.init(); // Initialize AOS animations properly
+      fetchGuests(); // Ensure guestbook entries load correctly
+    });
+
+    return { name, email, message, guests, addGuest, guestListRef };
+  }
+};
+
+
+</script>
     
     <style>
 
