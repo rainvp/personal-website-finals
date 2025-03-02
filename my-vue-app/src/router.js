@@ -13,7 +13,10 @@ const routes = [
 
 const router = createRouter({
   history: createWebHashHistory(),  // Use Hash Mode
-  routes
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    return { top: 0, behavior: 'smooth' }; // Ensures scrolling to top on navigation
+  }
 });
 
 export default router;

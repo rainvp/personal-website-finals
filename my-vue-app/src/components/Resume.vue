@@ -495,10 +495,10 @@ transform: rotate(180deg); /* Rotate arrow */
 }
 
 .tag {
+  max-width: 1300px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
     margin: 25px; /* Spacing above and below the tag */
     font-size: 1.5rem; /* Adjust text size */
     font-weight: bold;
@@ -642,7 +642,7 @@ li {
   background-color: #614f41;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 10px 10px;
   cursor: pointer;
   font-size: 16px;
   border-radius: 5px;
