@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from supabase import create_client
+import uuid
 
 app = Flask(__name__)
 CORS(app)
@@ -10,13 +11,25 @@ SUPABASE_URL = "https://kbhnxlrhbxamkgwyqpjn.supabase.co"
 SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtiaG54bHJoYnhhbWtnd3lxcGpuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg0Njc3NzEsImV4cCI6MjA1NDA0Mzc3MX0.lCXlrIXQaw3BvkzR9SBLGuxXnDAIscdkzcUpnn0KR-8"
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
+# Helper function to validate UUID
+def is_valid_uuid(value):
+    try:
+        uuid.UUID(str(value))
+        return True
+    except ValueError:
+        return False
+
 # Fetch user ID from guestbook
 def get_user_id(email):
     response = supabase.from_("guestbook").select("id").eq("email", email).execute()
-    if response.data and isinstance(response.data, list) and len(response.data) > 0:
-        return response.data[0]["id"]
+    
+    if response.get("error"):
+        return None  # Handle error properly
+    
+    data = response.get("data", [])
+    if data and isinstance(data, list) and data:
+        return data[0]["id"]
     return None
-
 
 @app.route('/toggle_reaction', methods=['POST'])
 def toggle_reaction():
@@ -30,14 +43,14 @@ def toggle_reaction():
 
     # Check if user exists in guestbook
     response = supabase.from_("guestbook").select("*").eq("email", user_email).execute()
-    if not response.data or len(response.data) == 0:
+    if response.get("error") or not response.get("data"):
         return jsonify({"error": "User not found"}), 404
 
     # Check if the user already reacted
     existing_reaction = supabase.from_("comment_reactions").select("*")\
         .eq("comment_id", comment_id).eq("user_email", user_email).execute()
 
-    if existing_reaction.data and len(existing_reaction.data) > 0:
+    if existing_reaction.get("data"):
         # Remove reaction if it exists
         supabase.from_("comment_reactions").delete()\
             .eq("comment_id", comment_id).eq("user_email", user_email).execute()
@@ -52,31 +65,23 @@ def toggle_reaction():
         }).execute()
         return jsonify({"message": "Reaction added", "reaction_type": reaction_type})
 
-
-import uuid
-
 @app.route('/get_reactions', methods=['GET'])
 def get_reactions():
     comment_id = request.args.get("comment_id")
-    if not comment_id:
-        return jsonify({"error": "Missing comment_id"}), 400
-
-    try:
-        # Convert comment_id to a valid UUID format
-        comment_id = str(uuid.UUID(comment_id))
-    except ValueError:
-        return jsonify({"error": "Invalid comment_id format"}), 400
+    if not comment_id or not is_valid_uuid(comment_id):
+        return jsonify({"error": "Invalid or missing comment_id"}), 400
 
     response = supabase.from_("comment_reactions").select("*").eq("comment_id", comment_id).execute()
     
+    if response.get("error"):
+        return jsonify({"error": "Database error"}), 500
+
     reactions = {"laughs": 0, "loves": 0, "dislikes": 0}
-    for reaction in response.data:
+    for reaction in response.get("data", []):
         if reaction["reaction_type"] in reactions:
             reactions[reaction["reaction_type"]] += 1
 
     return jsonify({"reactions": reactions})
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5001, debug=True)
-
-
+    app.run()
