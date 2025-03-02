@@ -143,6 +143,10 @@ p {
     color: #4a3b2b;
     padding: 10px 15px;
     transition: color 0.3s ease;
+
+      /* Remove unwanted shadows */
+  box-shadow: none;
+  text-shadow: none;
 }
 
 .dropbtn:hover {
@@ -310,6 +314,9 @@ p {
     position: relative;
     display: inline-block; 
     text-align: center;
+    /* Remove unwanted shadows */
+    box-shadow: none;
+    text-shadow: none;
 }
 
 /* Add hover effect */

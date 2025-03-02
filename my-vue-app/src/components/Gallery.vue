@@ -109,16 +109,6 @@
     </div>
   </div>
 
-  <footer class="footer">
-  <div class="footer-content">
-    <p> 2025 Rain's Café. All rights reserved.</p>
-    <div class="social-icons">
-      <a href="#"><i class="fab fa-facebook"></i></a>
-      <a href="#"><i class="fab fa-instagram"></i></a>
-      <a href="#"><i class="fab fa-twitter"></i></a>
-    </div>
-  </div>
-</footer>
 
 </template>
 
@@ -265,6 +255,9 @@ export default {
       { id: 4, src: 'https://github.com/rainvp/Personal-Profile-Webpage/blob/main/images/363829702_970044974249532_9015369949003698015_n.jpg?raw=true' },
       { id: 5, src: 'https://raw.githubusercontent.com/rainvp/Personal-Profile-Webpage/refs/heads/main/images/4ebab79f-86d0-41ab-b557-e37c20843d4b.jfif' },
       { id: 6, src: 'https://github.com/rainvp/Personal-Profile-Webpage/blob/main/images/472699294_466149492989920_1496860658682248426_n.jpg?raw=true' },
+      { id: 7, src: 'https://github.com/rainvp/Personal-Profile-Webpage/blob/main/images/8DD1B940-891E-44AA-BFCC-A3BE20992CDB.jpg?raw=true' },
+      { id: 8, src: 'https://github.com/rainvp/Personal-Profile-Webpage/blob/main/images/af29de30-95ab-420c-90d6-6d6e91d783d3.jpg?raw=true' },
+      { id: 9, src: 'https://github.com/rainvp/Personal-Profile-Webpage/blob/main/images/IMG_3543%20(2).JPG?raw=true' },
     ]);
 
     const captions = ref([
@@ -435,6 +428,10 @@ p {
     color: #4a3b2b;
     padding: 10px 15px;
     transition: color 0.3s ease;
+
+      /* Remove unwanted shadows */
+  box-shadow: none;
+  text-shadow: none;
 }
 
 .dropbtn:hover {
@@ -686,33 +683,42 @@ p {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Navigation buttons */
 .slider-nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 30px;
-  color: #ffffff;
-  background-color: rgba(0, 0, 0, 0.5);
+  font-size: 24px;  /* Adjust arrow size */
+  color: white;
+  background-color: rgba(0, 0, 0, 0.6);  /* Less opacity */
   border: none;
-  border-radius: 50%;
-  padding: 8px 12px;
+  border-radius: 50%;  /* Ensures it's circular */
+  padding: 10px;  /* Adjust padding */
   cursor: pointer;
-  z-index: 2;
-  user-select: none;
-}
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;  /* Fixed size */
+  height: 40px;  /* Fixed size */
 
-.left-arrow {
-  left: 10px;
-}
-
-.right-arrow {
-  right: 10px;
+    /* Remove unwanted shadows */
+  box-shadow: none;
+  text-shadow: none;
 }
 
 .slider-nav:hover {
   background-color: rgba(0, 0, 0, 0.8);
 }
+
+
+.left-arrow {
+  left: 15px;  /* Adjusted for equal spacing */
+}
+
+.right-arrow {
+  right: 15px; /* Adjusted for equal spacing */
+}
+
 
 /* Caption styling */
 .slider-caption {
@@ -864,6 +870,11 @@ p {
     border-left: 4px solid #d3a484;
     position: relative;
     transition: transform 0.2s ease-in-out, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    
   }
   
   .comment-box:hover {
@@ -885,98 +896,35 @@ p {
   
   /* Reactions */
   .reactions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 8px;
-  }
+  display: flex;
+  align-items: center;
+  gap: 13px; /* Small gap */
+  margin-top: 8px;
+  justify-content: flex-start;
+  flex-wrap: nowrap; /* Prevents wrapping */
+  width: max-content; /* Ensures only necessary width */
+  white-space: nowrap; /* Prevents line breaks */
+}
+
   
   .reactions button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 5px 8px;
-    border-radius: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  box-shadow: none;
+  text-shadow: none;
+  flex: 0 1 auto; /* Prevent shrinking */
+  padding: 1px 3px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 14px;
+  
   }
   
   .reactions button:hover {
     background: #ffdfdf;
     color: #d9534f;
-    transform: scale(1.1);
+    transform: scale(1);
   }
-
-    /* ------------------------------ footer ------------------------------*/
-/* Full-Width Footer */
-.footer {
-  width: 100%; /* Ensures the footer spans the full width */
-  background-color: #4a3b2b; /* Matching theme color */
-  color: #fff;
-  text-align: center;
-  padding: 15px 20px;
-  position: relative; /* Avoids unintended shifts */
-}
-
-
-.footer-content {
-  margin: 0 auto; /* Centers the content */
-  padding: 0 20px; /* Adds padding to prevent text from touching edges */
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-
-/* Footer Links */
-.footer a {
-  color: #f7e7d1;
-  text-decoration: none;
-  margin: 0 10px;
-  font-size: 16px;
-}
-
-.footer a:hover {
-  color: #d4b59b; /* Slight hover effect */
-}
-
-/* Social Media Icons */
-.footer .social-icons {
-  display: flex;
-  gap: 15px;
-}
-
-.footer .social-icons a {
-  font-size: 20px;
-}
-
-/* Responsive Footer */
-@media (max-width: 600px) {
-
-  /* Full-Width Footer */
-  .footer {
-  width: 100%; /* Ensures the footer spans the full width */
-  background-color: #4a3b2b; /* Matching theme color */
-  color: #fff;
-  text-align: center;
-  padding: 10px 10px;
-  position: relative; /* Avoids unintended shifts */
-}
-
-.footer-content {
-  margin: 0 auto; /* Centers the content */
-  padding: 10px 10px; /* Adds padding to prevent text from touching edges */
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-direction: column;
-  text-align: center;
-  gap: 10px;
-  
-}
-
-}
 </style>

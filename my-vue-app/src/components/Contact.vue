@@ -183,6 +183,9 @@ display: block; /* Ensure proper spacing around the image */
   color: #4a3b2b;
   padding: 10px 15px;
   transition: color 0.3s ease;
+    /* Remove unwanted shadows */
+  box-shadow: none;
+  text-shadow: none;
 }
 
 .dropbtn:hover {
@@ -547,75 +550,6 @@ display: block; /* Ensure proper spacing around the image */
 }
 .contact-links a:hover {
   color: #5a3826;
-}
-  /* ------------------------------ footer ------------------------------*/
-/* Full-Width Footer */
-.footer {
-  width: 100%; /* Ensures the footer spans the full width */
-  background-color: #4a3b2b; /* Matching theme color */
-  color: #fff;
-  text-align: center;
-  padding: 15px 20px;
-  position: relative; /* Avoids unintended shifts */
-}
-
-
-.footer-content {
-  margin: 0 auto; /* Centers the content */
-  padding: 0 20px; /* Adds padding to prevent text from touching edges */
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-
-/* Footer Links */
-.footer a {
-  color: #f7e7d1;
-  text-decoration: none;
-  margin: 0 10px;
-  font-size: 16px;
-}
-
-.footer a:hover {
-  color: #d4b59b; /* Slight hover effect */
-}
-
-/* Social Media Icons */
-.footer .social-icons {
-  display: flex;
-  gap: 15px;
-}
-
-.footer .social-icons a {
-  font-size: 20px;
-}
-
-/* Responsive Footer */
-@media (max-width: 600px) {
-
-  /* Full-Width Footer */
-  .footer {
-  width: 100%; /* Ensures the footer spans the full width */
-  background-color: #4a3b2b; /* Matching theme color */
-  color: #fff;
-  text-align: center;
-  padding: 10px 10px;
-  position: relative; /* Avoids unintended shifts */
-}
-
-.footer-content {
-  margin: 0 auto; /* Centers the content */
-  padding: 10px 10px; /* Adds padding to prevent text from touching edges */
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-direction: column;
-  text-align: center;
-  gap: 10px;
-  
-}
-
 }
 
 </style>

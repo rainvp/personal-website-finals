@@ -283,6 +283,10 @@ font-size: 16px;
 color: #4a3b2b;
 padding: 10px 15px;
 transition: color 0.3s ease;
+
+  /* Remove unwanted shadows */
+  box-shadow: none;
+  text-shadow: none;
 }
 
 .dropbtn:hover {
@@ -451,6 +455,10 @@ transform: rotate(180deg); /* Rotate arrow */
   position: relative;
   display: inline-block; 
   text-align: center;
+
+    /* Remove unwanted shadows */
+  box-shadow: none;
+  text-shadow: none;
 }
 
 /* Add hover effect */
@@ -656,6 +664,9 @@ li {
   max-width: 200px;  /* Adjust as needed */
   width: fit-content;
   display: block;  /* Prevents it from stretching */
+    /* Remove unwanted shadows */
+  box-shadow: none;
+  text-shadow: none;
 }
 
   .progress-wrapper {
