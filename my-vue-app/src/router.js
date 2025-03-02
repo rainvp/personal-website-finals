@@ -1,18 +1,18 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import Home from './components/NavbarBanner.vue';  // Home page
+import { createRouter, createWebHashHistory } from 'vue-router';  // Use Hash Mode
+import NavbarBanner from './components/NavbarBanner.vue';
 import Resume from './components/Resume.vue';
 import Gallery from './components/Gallery.vue';
 import Contact from './components/Contact.vue';
 
 const routes = [
-  { path: '/', component: Home },
+  { path: '/', component: NavbarBanner },
   { path: '/resume', component: Resume },
   { path: '/gallery', component: Gallery },
   { path: '/contact', component: Contact }
 ];
 
 const router = createRouter({
-  history: createWebHistory(),  // Ensure it's using Web History mode
+  history: createWebHashHistory(),  // Use Hash Mode
   routes
 });
 
