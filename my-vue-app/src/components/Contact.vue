@@ -50,24 +50,21 @@
   </header>
 
   <div class="contact-container">
-    <h2 class="contact-title">Let's Connect! ☕</h2>
-    <p class="contact-subtitle">Drop me a message and I'll get back to you soon!</p>
+    <img src="https://i.pinimg.com/originals/99/35/48/99354834273738b01a92ea362d77f347.gif" alt="Warm greeting GIF" class="contact-gif" />
     
-    <form @submit.prevent="submitForm" class="contact-form">
-      <input v-model="name" type="text" placeholder="Your Name" required />
-      <input v-model="email" type="email" placeholder="Your Email" required />
-      <input v-model="subject" type="text" placeholder="Subject (optional)" />
-      <textarea v-model="message" placeholder="Your Message" required></textarea>
-      <button type="submit">Send Message ✉️</button>
-    </form>
+    <h2 class="contact-title">Let's Stay Connected!☕</h2>
     
-    <p v-if="confirmationMessage" class="confirmation-message">{{ confirmationMessage }}</p>
+    <div class="contact-message">
+      <p>Hey there! Just like a good cup of coffee, great conversations warm the soul.☕🍪
+      Whether you want to chat, collaborate, or simply say hello, I'd love to hear from you!
+      Feel free to reach out through any of the links below. Let's make something amazing together!🧇🥞🥖</p>
+    </div>
     
     <div class="contact-links">
-      <p>Or reach me here:</p>
-      <a href="mailto:your@email.com"><i class="fas fa-envelope"></i></a>
-      <a href="https://twitter.com/yourprofile" target="_blank"><i class="fab fa-twitter"></i></a>
-      <a href="https://instagram.com/yourprofile" target="_blank"><i class="fab fa-instagram"></i></a>
+      <p>You can find me here:</p>
+      <a href="mailto:rainvpresa@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+      <a href="https://instagram.com/yourprofile" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="https://linkedin.com/in/yourprofile" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
     </div>
   </div>
 
@@ -434,118 +431,65 @@ display: block; /* Ensure proper spacing around the image */
 }
 
 /*---------------------------------- Contact-----------------------*/
-.contact-container {
-  max-width: 1000px;
-  width: 100%;
-  margin: 2rem auto;
-  margin-bottom: 85px;
-  padding: 20px;
-  background: #f4e4d7;
-  font-family: cursive;
-  border: 4px solid #c99f82;
-  box-shadow: 8px 8px 0px #5e3d2b;
-  text-align: center;
-  
-}
 
-/* Comment Form */
-.comment-form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 1.2rem;
+.contact-container {
+    max-width: 1250px;
+    width: 100%;
+    margin: 2rem auto 85px;
+    padding: 20px;
+    background: #ffe4cd;
+    font-family: 'Poppins', sans-serif;
+    border: 4px solid #c99f82;
+    box-shadow: 8px 8px 0px #5e3d2b;
+    text-align: center;
 }
 
 .contact-title {
-  font-size: 26px;
-  color: #5a3826;
-  font-weight: bold;
-  font-family: 'Press Start 2P', cursive;
-}
-.contact-subtitle {
-  font-size: 12px;
-  color: #7d5c43;
-  margin-top: 15px;
-  margin-bottom: 15px;
-  font-family: 'Press Start 2P', cursive;
-}
-.contact-form input, .contact-form textarea {
-  width: 100%;
-  margin: 3px;
-  padding: 12px;
-  font-family: inherit;
-  border: 2px solid #c98b72;
-  border-radius: 3px;
-  font-size: 1rem;
-  background: #fffaf5;
-  color: #4a3f35;
-  box-shadow: 4px 4px 0px #5e3d2b;
+  margin: 30px;
+    font-size: 28px;
+    color: #5a3826;
+    font-weight: bold;
+    font-family: 'Press Start 2P', cursive;
 }
 
-.contact-form textarea {
-  resize: none;
-  min-height: 100px;
+.contact-message {
+  background: #fff8dc; /* Warm background */
+  padding: 10px 30px;
+  margin: 5px 150px;
+  border: 3px solid #8b5e3c; /* Brown border */
+  box-shadow: 4px 4px 0px #5e3d2b; /* Vintage-style shadow */
+  font-size: 16px; 
+  font-family: cursive;
+  position: relative;
+  display: flex;
+  flex-direction: column; /* Stack content vertically */
+  gap: 5px; /* Space between elements */
+  text-align: justify;
+    
 }
 
-.contact-form button {
-  padding: 12px;
-  background: #c48d74;
-  color: white;
-  font-size: 12px;
-  font-family: 'Press Start 2P';
-  letter-spacing: 2px;
-  border: none;
-  text-transform: uppercase;
-  border-radius: 3px;
-  cursor: pointer;
-  transition: 0.3s;
-  cursor: pointer;
-  font-weight: bold;
-  transition: transform 0.1s;
-  box-shadow: 4px 4px 0px #5e3d2b;
-}
-
-
-/* Push-up effect */
-.contact-form input:focus,
-.contact-form textarea:focus {
-  outline: none;
-  transform: translateY(-3px);
-  box-shadow: 2px 2px 0px #5e3d2b;
-  margin-bottom: 16px; /* Slightly increases spacing below */
-}
-
-/* Adjust margin of the next sibling to push it back */
-.contact-form input:focus + textarea,
-.contact-form textarea:focus + button {
-  margin-top: -8px;
-}
-/* Retro Button Click Effect */
-.contact-form button:active {
-  transform: translate(3px, 3px);
-  box-shadow: 2px 2px 0px #5e3d2b;
-}
-.contact-form button:hover {
-  background: #8b5e47;
-  transform: scale(1.05);
-}
-.confirmation-message {
-  margin-top: 12px;
-  color: #5a3826;
-  font-weight: bold;
-}
-.contact-links {
-  margin-top: 15px;
-}
 .contact-links a {
-  display: inline-block;
-  margin: 0 8px;
-  color: #7d5c43;
-  font-size: 22px;
-  transition: color 0.3s;
+    display: inline-block;
+    margin: 0 12px;
+    font-size: 26px;
+    color: #7d5c43;
+    transition: color 0.3s, transform 0.2s;
+    font-family: 'Press Start 2P', cursive;
 }
+
 .contact-links a:hover {
-  color: #5a3826;
+    color: #5a3826;
+    transform: scale(1.1);
+}
+
+.contact-links p {
+  font-size: 18px; 
+  font-family: cursive;
+  position: relative;
+  display: flex;
+  flex-direction: column; /* Stack content vertically */
+  gap: 8px; /* Space between elements */
+  text-align: center;
 }
 
 </style>
