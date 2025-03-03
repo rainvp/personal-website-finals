@@ -669,6 +669,11 @@ li {
   text-shadow: none;
 }
 
+.pour-button:hover {
+  background-color: #91765f; /* Darker shade for hover effect */
+ 
+}
+
   .progress-wrapper {
     display: flex;
     flex-wrap: wrap;

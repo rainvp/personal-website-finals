@@ -883,6 +883,33 @@ p {
     gap: 15px;
     padding: 0 10px;
   }
+
+  .comments-list {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 0 10px;
+  max-height: 400px;
+  overflow-y: auto;
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #c99f82 #f4e4d7; /* Firefox */
+}
+
+/* WebKit Scrollbar */
+.comments-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.comments-list::-webkit-scrollbar-thumb {
+  background: #c99f82;
+  border-radius: 6px;
+}
+
+.comments-list::-webkit-scrollbar-track {
+  background: #f4e4d7;
+  border-radius: 6px;
+}
   
   /* Comment Box */
   .comment-box {
