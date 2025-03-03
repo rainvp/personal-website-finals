@@ -79,37 +79,36 @@
     <div id="app-comments" class="comments-section" data-aos="zoom-in-up">
       <h2 class="section-title">Share your thoughts!💬</h2>
 
-      <!-- Comment Form -->
       <form @submit.prevent="addComment" class="comment-form">
         <input v-model="newComment.name" type="text" placeholder="Your Name" required />
         <textarea v-model="newComment.comment" placeholder="Write a comment..." required></textarea>
         <button type="submit">Post Comment</button>
       </form>
 
-      <!-- Comments List -->
       <div class="comments-list">
         <div v-for="comment in comments" :key="comment.id" class="comment-box">
           <p><strong>{{ comment.name }}</strong>: {{ comment.comment }}</p>
           <span>{{ formatTimestamp(comment.created_at) }}</span>
+          
+          <a @click="toggleReplyForm(comment.id)" class="reply-trigger">Reply</a>
+          
+          
+          <div v-if="replyForms[comment.id]" class="reply-form">
+  <input v-model="newReply[comment.id]" type="text" placeholder="Write a reply..." required />
+  <button @click="addReply(comment.id)">Post Reply</button>
+</div>
 
-          <!-- Reactions -->
-          <div class="reactions">
-            <button @click="toggleReaction(comment.id, 'laughs')">
-              😂 <span>{{ comment.reactions.laughs }}</span>
-            </button>
-            <button @click="toggleReaction(comment.id, 'loves')">
-              ❤️ <span>{{ comment.reactions.loves }}</span>
-            </button>
-            <button @click="toggleReaction(comment.id, 'dislikes')">
-              👎 <span>{{ comment.reactions.dislikes }}</span>
-            </button>
+          
+          <div v-if="comment.replies.length" class="replies-list">
+            <div v-for="reply in comment.replies" :key="reply.id" class="reply-box">
+              <p><strong>{{ reply.name }}</strong>: {{ reply.comment }}</p>
+              <span>{{ formatTimestamp(reply.created_at) }}</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-
 </template>
 
 <script>
@@ -118,134 +117,153 @@ import supabase from '../lib/supabaseClient';
 
 export default {
   setup() {
-    // Comment Section
     const comments = ref([]);
     const newComment = ref({ name: '', comment: '' });
-
-    // Retrieve stored user email from guestbook
+    const replyForms = ref({});
+    const newReply = ref({});
+    const userName = ref(null); // Store user's name if they are in guestbook
     const storedEmail = localStorage.getItem("user_email") || null;
+
+    // Fetch user's name from guestbook
+    const fetchGuestbookName = async () => {
+      if (!storedEmail) return;
+      try {
+        let { data, error } = await supabase
+          .from('guestbook')
+          .select('name')
+          .eq('email', storedEmail)
+          .single();
+        
+        if (!error && data) {
+          userName.value = data.name; // Store user's name
+        }
+      } catch (err) {
+        console.error("Error fetching guestbook name:", err);
+      }
+    };
 
     const fetchComments = async () => {
       try {
         let { data, error } = await supabase
           .from('comments')
-          .select('*')
+          .select('*, replies:replies(*)')  
           .order('created_at', { ascending: false });
 
         if (error) throw error;
-
-        comments.value = data.map(comment => ({
-          ...comment,
-          reactions: { laughs: 0, loves: 0, dislikes: 0 }, // Default state
-        }));
-
-        // Batch fetch reactions for efficiency
-        await Promise.all(comments.value.map(comment => fetchReactions(comment.id)));
-
+        comments.value = data.map(comment => ({ ...comment, replies: comment.replies || [] }));
       } catch (err) {
         console.error("Error fetching comments:", err);
       }
     };
 
-    const fetchReactions = async (commentId) => {
-      try {
-        const response = await fetch(`http://localhost:5001/get_reactions?comment_id=${commentId}`);
-        const data = await response.json();
-
-        if (data.reactions) {
-          comments.value = comments.value.map(comment =>
-            comment.id === commentId ? { ...comment, reactions: data.reactions } : comment
-          );
-        }
-      } catch (error) {
-        console.error("Error fetching reactions:", error);
-      }
-    };
-
     const addComment = async () => {
-      if (!newComment.value.name || !newComment.value.comment) return;
+  let commentCount = parseInt(localStorage.getItem("comment_count")) || 0;
+  let firstCommentTime = localStorage.getItem("first_comment_time");
 
-      try {
-        let { data, error } = await supabase
-          .from('comments')
-          .insert([
-            {
-              name: newComment.value.name,
-              comment: newComment.value.comment,
-              email: storedEmail, // Attach stored email if available
-              created_at: new Date().toISOString(),
-            }
-          ])
-          .select('*');
+  const now = new Date().getTime();
+  const cooldownDuration = 1800000; // 30 minutes in milliseconds
 
-        if (!error && data.length > 0) {
-          let newCommentData = {
-            ...data[0],
-            reactions: { laughs: 0, loves: 0, dislikes: 0 }
-          };
-          comments.value.unshift(newCommentData);
-          newComment.value = { name: newComment.value.name, comment: '' }; // Retain name
-        }
-      } catch (error) {
-        console.error("Error adding comment:", error);
+  // Reset counter if more than 30 minutes have passed since the first comment
+  if (firstCommentTime && now - parseInt(firstCommentTime) >= cooldownDuration) {
+    localStorage.setItem("comment_count", "0");
+    localStorage.setItem("first_comment_time", now.toString());
+    commentCount = 0;
+  }
+
+  if (commentCount >= 3) {
+    alert("You can only post 3 comments every 30 minutes.");
+    return;
+  }
+
+  if (!newComment.value.name || !newComment.value.comment) return;
+
+  try {
+    let { data, error } = await supabase
+      .from('comments')
+      .insert([{ 
+        name: newComment.value.name.trim() || "Anonymous",
+        comment: newComment.value.comment.trim(), 
+        ...(storedEmail && { email: storedEmail }),
+        created_at: new Date().toISOString()
+      }])
+      .select('*');
+
+    if (!error && data.length > 0) {
+      comments.value.unshift({ ...data[0], replies: [] });
+
+      // ✅ Store the user's comment name for replies
+      localStorage.setItem("commenter_name", newComment.value.name.trim());
+
+      // ✅ Increment comment count
+      localStorage.setItem("comment_count", (commentCount + 1).toString());
+
+      // ✅ Set first comment time if this is the first one within 30 minutes
+      if (commentCount === 0) {
+        localStorage.setItem("first_comment_time", now.toString());
       }
-    };
 
-    const toggleReaction = async (commentId, reactionType) => {
-      if (!storedEmail) {
-        console.error("User not recognized (not in guestbook)");
-        return;
-      }
+      // ✅ Clear input fields
+      newComment.value.name = '';
+      newComment.value.comment = '';
+    }
+  } catch (error) {
+    console.error("Error adding comment:", error);
+  }
+};
 
-      try {
-        const response = await fetch("http://localhost:5001/toggle_reaction", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            comment_id: commentId,
-            reaction_type: reactionType,
-            user_email: storedEmail // Use stored email instead of auth
-          }),
-        });
+const toggleReplyForm = (commentId) => {
+  replyForms.value[commentId] = !replyForms.value[commentId];
+};
 
-        const result = await response.json();
-        console.log(result.message);
+const hasUserCommented = computed(() => localStorage.getItem("comment_count") > 0);
+const canUserReply = computed(() => hasUserCommented.value || userName.value);
 
-        // Fetch updated reactions
-        fetchReactions(commentId);
-      } catch (error) {
-        console.error("Error toggling reaction:", error);
-      }
-    };
+
+const addReply = async (commentId) => {
+  if (!newReply.value[commentId]?.trim()) return;
+
+  // Get the stored commenter name or fallback to guestbook name
+  const storedCommenterName = localStorage.getItem("commenter_name");
+  const finalName = storedCommenterName || userName.value || "Anonymous";
+
+  // Prevent reply if user is not in guestbook and hasn't commented
+  if (!canUserReply.value) {
+    alert("You must either be in the guestbook or have commented first before replying.");
+    return;
+  }
+
+  try {
+    let { data, error } = await supabase
+      .from('replies')
+      .insert([{ 
+        name: finalName,  
+        comment: newReply.value[commentId],
+        parent_id: commentId,
+        created_at: new Date().toISOString()
+      }])
+      .select('*');
+
+    if (!error && data.length > 0) {
+      comments.value = comments.value.map(comment =>
+        comment.id === commentId ? { ...comment, replies: [...comment.replies, data[0]] } : comment
+      );
+
+      newReply.value[commentId] = '';
+      replyForms.value[commentId] = false;
+    }
+  } catch (error) {
+    console.error("Error adding reply:", error);
+  }
+};
 
     const formatTimestamp = (timestamp) => {
       return timestamp ? new Date(timestamp).toLocaleString() : "Unknown time";
     };
-
-    onMounted(() => {
-      fetchComments();
-
-      // Subscribe to real-time updates for new comments
-      supabase
-        .channel('comments')
-        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'comments' }, (payload) => {
-          let newComment = { ...payload.new, reactions: { laughs: 0, loves: 0, dislikes: 0 } };
-          comments.value.unshift(newComment);
-        })
-        .subscribe();
-
-      // Subscribe to real-time updates for reactions
-      supabase
-        .channel('reactions')
-        .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'reactions' }, (payload) => {
-          fetchReactions(payload.new.comment_id);
-        })
-        .subscribe();
-    });
-
-    // Auto-fill name if user already signed guestbook
-    const storedName = localStorage.getItem("user_name") || '';
-    newComment.value.name = storedName;
+    onMounted(async () => {
+  localStorage.removeItem("comment_count");  // Resets on refresh during development
+  await fetchGuestbookName();
+  await fetchComments();
+});
 
     // Gallery Section
     const images = ref([
@@ -293,8 +311,14 @@ export default {
       comments,
       newComment,
       addComment,
-      toggleReaction,
+      replyForms,
+      newReply,
+      hasUserCommented,
+      canUserReply,
+      toggleReplyForm,
+      addReply,
       formatTimestamp,
+      userName,
 
       // Gallery
       images,
@@ -894,37 +918,89 @@ p {
     margin-top: 6px;
   }
   
-  /* Reactions */
-  .reactions {
-  display: flex;
-  align-items: center;
-  gap: 13px; /* Small gap */
-  margin-top: 8px;
-  justify-content: flex-start;
-  flex-wrap: nowrap; /* Prevents wrapping */
-  width: max-content; /* Ensures only necessary width */
-  white-space: nowrap; /* Prevents line breaks */
+/* Reply trigger (small text link) */
+.reply-trigger {
+  font-size: 0.99rem;
+  color: #6d6159;
+  cursor: pointer;
+  text-decoration: none;
+  margin-top: 2px;
+  display: inline-block;
 }
 
-  
-  .reactions button {
-  background: none;
+.reply-trigger:hover {
+  color: #8c7463;
+  text-decoration: underline;
+}
+
+/* Reply Form */
+.reply-form {
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: transparent; /* No background box */
+  padding: 0;
+  border-left: none; /* Remove border */
+}
+
+.reply-form input {
+  width: 100%;
+  padding: 10px;
+  font-size: 0.8rem;
+  border: 1px solid #d4a98d;
+  border-radius: 3px;
+  background: #fffaf5;
+  color: #5a4c43;
+  font-family: inherit;
+}
+
+.reply-form button {
+  padding: 6px;
+  background: #c8a08b;
+  color: white;
+  font-size: 10px;
   border: none;
+  border-radius: 3px;
   cursor: pointer;
   box-shadow: none;
   text-shadow: none;
-  flex: 0 1 auto; /* Prevent shrinking */
-  padding: 1px 3px;
-  border-radius: 6px;
-  display: inline-flex;
-  align-items: center;
-  font-size: 14px;
-  
-  }
-  
-  .reactions button:hover {
-    background: #ffdfdf;
-    color: #d9534f;
-    transform: scale(1);
-  }
+  transition: background 0.2s, transform 0.1s;
+  align-self: flex-start; /* Align button to left */
+}
+
+.reply-form button:hover {
+  background: #b98f7b;
+}
+
+.reply-form button:active {
+  transform: translateY(1px);
+}
+
+/* Replies List */
+.replies-list {
+  margin-top: 4px;
+  padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.reply-box {
+  background: transparent;
+  padding: 4px;
+  font-size: 0.8rem;
+}
+
+.reply-box p {
+  margin: 0;
+}
+
+.reply-box span {
+  font-size: 0.7rem;
+  color: #a28b7c;
+  display: block;
+  margin-top: 2px;
+}
+
 </style>

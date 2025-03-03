@@ -45,7 +45,7 @@
               <div class="section-heading">
                 <h1>Rain's Digital Café</h1>
               </div>
-              <a href="#owner" class="button">Get to know me!</a>
+              <a href="#owner" class="button" @click.prevent="scrollToOwner">Get to know me!</a>
             </div>
           </div>
         </header>
@@ -179,6 +179,13 @@ export default {
     const guests = ref([]);
     const guestListRef = ref(null); // Reference to the guest list container
 
+    const scrollToOwner = () => {
+  const ownerSection = document.getElementById("owner");
+  if (ownerSection) {
+    ownerSection.scrollIntoView({ behavior: "smooth" });
+  }
+}
+
     const fetchGuests = async () => {
       try {
         const { data, error } = await supabase
@@ -267,7 +274,7 @@ export default {
       fetchGuests(); // Ensure guestbook entries load correctly
     });
 
-    return { name, email, message, guests, addGuest, guestListRef };
+    return { name, email, message, guests, addGuest, guestListRef, scrollToOwner};
   }
 };
 
