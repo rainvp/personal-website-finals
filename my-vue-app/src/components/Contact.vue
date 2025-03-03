@@ -49,6 +49,8 @@
       </div>
   </header>
 
+  <br>
+  <br>
   <div class="contact-container">
     <img src="https://i.pinimg.com/originals/99/35/48/99354834273738b01a92ea362d77f347.gif" alt="Warm greeting GIF" class="contact-gif" />
     
@@ -63,42 +65,14 @@
     <div class="contact-links">
       <p>You can find me here:</p>
       <a href="mailto:rainvpresa@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
-      <a href="https://instagram.com/yourprofile" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-      <a href="https://linkedin.com/in/yourprofile" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+      <a href="https://www.instagram.com/iamrainvp" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.linkedin.com/in/rain-cel-anne-sophia-presa-a428b7289/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
     </div>
   </div>
 
 </template>
 
 <script>
-import { onMounted, ref, computed } from 'vue';
-import supabase from '../lib/supabaseClient';
-export default {
-  data() {
-    return {
-      name: '',
-      email: '',
-      subject: '',
-      message: '',
-      confirmationMessage: ''
-    };
-  },
-  methods: {
-    async submitForm() {
-      const { error } = await supabase.from('contact_messages').insert([
-        { name: this.name, email: this.email, subject: this.subject, message: this.message }
-      ]);
-      
-      if (!error) {
-        this.confirmationMessage = '☕ Your message has been brewed and sent!';
-        this.name = this.email = this.subject = this.message = '';
-      } else {
-        this.confirmationMessage = '⚠️ Oops! Something went wrong. Please try again.';
-      }
-    }
-  }
-};
-
 </script>
 
 <style scoped>
@@ -387,49 +361,6 @@ display: block; /* Ensure proper spacing around the image */
   }
 }
 
-
-.resume-section {
-    width: 100%;
-    margin-bottom: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.tag {
-    width: 100%;
-    font-size: 28px;
-    font-weight: bold;
-    color: #5a391f;
-    margin-bottom: 2px;
-    text-transform: uppercase;
-    font-family: 'Poppins', sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    font-weight: bold;
-    letter-spacing: 2px; /* Add some spacing between letters */
-    position: relative; /* For positioning the lines */
-}
-
-  .tag::before {
-    content: "";
-    flex: 1; 
-    height: 3px; 
-    flex-grow: 5; /* Makes the lines expand further */
-    background: linear-gradient(to right, #d4b59b, #502917);
-    margin: 0 15px;
-}
-.tag::after {
-    content: "";
-    flex: 1; 
-    flex-grow: 5; /* Makes the lines expand further */
-    height: 3px; 
-    background: linear-gradient(to left, #d4b59b, #502917); /* Gradient effect */
-    margin: 0 15px;
-}
-
 /*---------------------------------- Contact-----------------------*/
 
 .contact-container {
@@ -443,6 +374,14 @@ display: block; /* Ensure proper spacing around the image */
     box-shadow: 8px 8px 0px #5e3d2b;
     text-align: center;
 }
+
+.contact-gif {
+    width: 300px; /* Adjust width */
+    height: auto; /* Maintain aspect ratio */
+    margin-bottom: 15px; /* Adjust spacing */
+    border-radius: 6px; /* Keep smooth edges */
+}
+
 
 .contact-title {
   margin: 30px;
