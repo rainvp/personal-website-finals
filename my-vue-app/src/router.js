@@ -3,12 +3,14 @@ import NavbarBanner from './components/NavbarBanner.vue';
 import Resume from './components/Resume.vue';
 import Gallery from './components/Gallery.vue';
 import Contact from './components/Contact.vue';
+import Resources from './components/Resources.vue';
 
 const routes = [
   { path: '/', component: NavbarBanner },
   { path: '/resume', component: Resume },
   { path: '/gallery', component: Gallery },
-  { path: '/contact', component: Contact }
+  { path: '/contact', component: Contact },
+  { path: '/resources', component: Resources }
 ];
 
 const router = createRouter({

@@ -18,20 +18,13 @@
             <div class="dropdown-content">
                 <div class="dropdown-section">
                   <h4 class="dropdown-title">Menu</h4>
-                  <a href="#menu1">Coffees</a>
-                  <a href="#menu2">Pastries</a>
-                  <a href="#menu3">Specials</a>
-                </div>
-                <div class="dropdown-section">
-                  <h4 class="dropdown-title">Contact Us</h4>
-                  <a href="#location">Our Location</a>
-                  <a href="#support">Customer Support</a>
+                  <router-link to= "/resources">Resources</router-link>
                 </div>
                 <div class="dropdown-section">
                   <h4 class="dropdown-title">Social</h4>
                   <a href="#facebook">Facebook</a>
                   <a href="#instagram">Instagram</a>
-                  <a href="#twitter">Twitter</a>
+                  <a href="#twitter">Spotify</a>
                 </div>
             </div>
         </div>
@@ -43,7 +36,7 @@
       <div id="banner-content" class="row clearfix">
           <div class="col-38">
               <div class="section-heading">
-                  <h1>Steamed & Skilled</h1>
+                  <h1>Talk Over Tea</h1>
               </div>
           </div>
       </div>
@@ -263,22 +256,13 @@ display: block; /* Ensure proper spacing around the image */
     overflow: hidden;
     
     /* Background Image */
-    background-image: url("https://i.pinimg.com/originals/06/e9/eb/06e9eb69fa238ccd42c1b25cdb8c6ac9.gif");
+    background-image: url("https://i.pinimg.com/originals/ea/84/09/ea840917053aaea098f02fc1e60a7c13.gif");
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: 40% 75%;
+    background-position: 20% 5%;
 }
 
-/* Optional Gradient Overlay for a softer look */
-#banner:before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(rgba(241, 179, 121, 0.39), rgba(255, 255, 255, 0.5));
-}
+
 
 /* Banner content section */
 #banner-content {

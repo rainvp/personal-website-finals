@@ -4,39 +4,32 @@
         <img 
           src="https://github.com/rainvp/Personal-Profile-Webpage/blob/main/images/logo.png?raw=true"
           alt="Rain's Cafe Logo">
-      </div>   
-    
-  <div class="nav-links">
+      </div>     
+  
+    <div class="nav-links">
       <router-link to="/" class="nav-link"><b>Home</b></router-link>
       <router-link to="/resume" class="nav-link"><b>More</b></router-link>
       <router-link to="/gallery" class="nav-link"><b>Gallery</b></router-link>
       <router-link to="/contact" class="nav-link"><b>Contact</b></router-link>
-    <div class="dropdown">
-              <button class="dropbtn">
-                  <span class="dropdown-icon">&#x25BC;</span>
-              </button>
-              <div class="dropdown-content">
-                  <div class="dropdown-section">
-                    <h4 class="dropdown-title">Menu</h4>
-                    <a href="#menu1">Coffees</a>
-                    <a href="#menu2">Pastries</a>
-                    <a href="#menu3">Specials</a>
-                  </div>
-                  <div class="dropdown-section">
-                    <h4 class="dropdown-title">Contact Us</h4>
-                    <a href="#location">Our Location</a>
-                    <a href="#support">Customer Support</a>
-                  </div>
-                  <div class="dropdown-section">
-                    <h4 class="dropdown-title">Social</h4>
-                    <a href="#facebook">Facebook</a>
-                    <a href="#instagram">Instagram</a>
-                    <a href="#twitter">Twitter</a>
-                  </div>
-              </div>
-          </div>
-      </div> 
-    </nav>
+        <div class="dropdown">
+            <button class="dropbtn">
+                <span class="dropdown-icon">&#x25BC;</span>
+            </button>
+            <div class="dropdown-content">
+                <div class="dropdown-section">
+                  <h4 class="dropdown-title">Menu</h4>
+                  <router-link to= "/resources">Resources</router-link>
+                </div>
+                <div class="dropdown-section">
+                  <h4 class="dropdown-title">Social</h4>
+                  <a href="#facebook">Facebook</a>
+                  <a href="#instagram">Instagram</a>
+                  <a href="#twitter">Spotify</a>
+                </div>
+            </div>
+        </div>
+    </div> 
+  </nav>
 
     <br>
   

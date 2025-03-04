@@ -4,7 +4,7 @@
         <img 
           src="https://github.com/rainvp/Personal-Profile-Webpage/blob/main/images/logo.png?raw=true"
           alt="Rain's Cafe Logo">
-      </div>      
+      </div>     
   
     <div class="nav-links">
       <router-link to="/" class="nav-link"><b>Home</b></router-link>
@@ -18,20 +18,13 @@
             <div class="dropdown-content">
                 <div class="dropdown-section">
                   <h4 class="dropdown-title">Menu</h4>
-                  <a href="#menu1">Coffees</a>
-                  <a href="#menu2">Pastries</a>
-                  <a href="#menu3">Specials</a>
-                </div>
-                <div class="dropdown-section">
-                  <h4 class="dropdown-title">Contact Us</h4>
-                  <a href="#location">Our Location</a>
-                  <a href="#support">Customer Support</a>
+                  <router-link to= "/resources">Resources</router-link>
                 </div>
                 <div class="dropdown-section">
                   <h4 class="dropdown-title">Social</h4>
                   <a href="#facebook">Facebook</a>
                   <a href="#instagram">Instagram</a>
-                  <a href="#twitter">Twitter</a>
+                  <a href="#twitter">Spotify</a>
                 </div>
             </div>
         </div>
