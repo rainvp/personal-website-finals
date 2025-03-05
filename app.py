@@ -21,7 +21,7 @@ def is_valid_uuid(value):
     
 @app.route('/')
 def home():
-    return "Welcome to the Guestbook API! Use Postman to interact with it."
+    return "Welcome to the Guestbook API!"
 
     
 @app.route('/guestbook', methods=['GET'])
