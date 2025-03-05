@@ -1,42 +1,43 @@
 <template>
-    <nav class="navbar">
-      <div class="logo">
-        <img 
-          src="https://github.com/rainvp/Personal-Profile-Webpage/blob/main/images/logo.png?raw=true"
-          alt="Rain's Cafe Logo">
-      </div>     
-  
-    <div class="nav-links">
-      <router-link to="/" class="nav-link"><b>Home</b></router-link>
-      <router-link to="/resume" class="nav-link"><b>More</b></router-link>
-      <router-link to="/gallery" class="nav-link"><b>Gallery</b></router-link>
-      <router-link to="/contact" class="nav-link"><b>Contact</b></router-link>
-        <div class="dropdown">
-            <button class="dropbtn">
-                <span class="dropdown-icon">&#x25BC;</span>
-            </button>
-            <div class="dropdown-content">
-                <div class="dropdown-section">
-                  <h4 class="dropdown-title">Menu</h4>
-                  <router-link to= "/resources">Resources</router-link>
-                </div>
-                <div class="dropdown-section">
-                  <h4 class="dropdown-title">Social</h4>
-                  <a href="#facebook">Facebook</a>
-                  <a href="#instagram">Instagram</a>
-                  <a href="#twitter">Spotify</a>
-                </div>
-            </div>
-        </div>
-    </div> 
-  </nav>
+  <nav class="navbar">
+    <div class="logo">
+      <img 
+        src="https://github.com/rainvp/Personal-Profile-Webpage/blob/main/images/logo.png?raw=true"
+        alt="Rain's Cafe Logo">
+    </div>     
+
+  <div class="nav-links">
+    <router-link to="/" class="nav-link"><b>Home</b></router-link>
+    <router-link to="/resume" class="nav-link"><b>More</b></router-link>
+    <router-link to="/gallery" class="nav-link"><b>Gallery</b></router-link>
+    <router-link to="/contact" class="nav-link"><b>Contact</b></router-link>
+      <div class="dropdown">
+          <button class="dropbtn">
+              <span class="dropdown-icon">&#x25BC;</span>
+          </button>
+          <div class="dropdown-content">
+              <div class="dropdown-section">
+                <h4 class="dropdown-title">Menu</h4>
+                <router-link to= "/resources">Resources</router-link>
+              </div>
+              <div class="dropdown-section">
+                <h4 class="dropdown-title">Social</h4>
+                <a href="https://www.facebook.com/raincelannesophia.presa" target="_blank" rel="noopener noreferrer">Facebook</a>
+                <a href="https://www.instagram.com/iamrainvp/" target="_blank" rel="noopener noreferrer">Instagram</a>
+                <a href="https://open.spotify.com/user/31a33al3euch4q3nivqduvjf73aa?si=a31c2d833dd74199" target="_blank" rel="noopener noreferrer">Spotify</a>
+
+              </div>
+          </div>
+      </div>
+  </div> 
+</nav>
 
   <!-- Banner Section -->
   <header id="banner">
       <div id="banner-content" class="row clearfix">
           <div class="col-38">
               <div class="section-heading">
-                  <h1>Steamed & Skilled</h1>
+                  <h1>Poured Over Pages</h1>
               </div>
           </div>
       </div>

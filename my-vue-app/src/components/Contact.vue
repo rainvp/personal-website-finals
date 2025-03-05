@@ -22,9 +22,10 @@
                 </div>
                 <div class="dropdown-section">
                   <h4 class="dropdown-title">Social</h4>
-                  <a href="#facebook">Facebook</a>
-                  <a href="#instagram">Instagram</a>
-                  <a href="#twitter">Spotify</a>
+                  <a href="https://www.facebook.com/raincelannesophia.presa" target="_blank" rel="noopener noreferrer">Facebook</a>
+                  <a href="https://www.instagram.com/iamrainvp/" target="_blank" rel="noopener noreferrer">Instagram</a>
+                  <a href="https://open.spotify.com/user/31a33al3euch4q3nivqduvjf73aa?si=a31c2d833dd74199" target="_blank" rel="noopener noreferrer">Spotify</a>
+
                 </div>
             </div>
         </div>
