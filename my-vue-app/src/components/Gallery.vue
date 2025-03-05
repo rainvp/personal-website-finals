@@ -222,7 +222,7 @@ const addReply = async (commentId) => {
 
   // Prevent reply if user is not in guestbook and hasn't commented
   if (!canUserReply.value) {
-    alert("You must either be in the guestbook or have commented first before replying.");
+    alert("You must either have provided an email in the guestbook or have commented first before replying.");
     return;
   }
 
