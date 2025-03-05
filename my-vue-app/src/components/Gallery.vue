@@ -270,13 +270,29 @@ const addReply = async (commentId) => {
       { id: 7, src: 'https://github.com/rainvp/Personal-Profile-Webpage/blob/main/images/8DD1B940-891E-44AA-BFCC-A3BE20992CDB.jpg?raw=true' },
       { id: 8, src: 'https://github.com/rainvp/Personal-Profile-Webpage/blob/main/images/af29de30-95ab-420c-90d6-6d6e91d783d3.jpg?raw=true' },
       { id: 9, src: 'https://github.com/rainvp/Personal-Profile-Webpage/blob/main/images/IMG_3543%20(2).JPG?raw=true' },
+      { id: 10, src: 'https://cdn.discordapp.com/attachments/1155238663953862718/1346842153493467348/10.jpg?ex=67c9a800&is=67c85680&hm=d994e43d9aaac153694e19625e97667ef7d27da006927cf738e67d64bf19ebb5&' },
+      { id: 11, src: 'https://cdn.discordapp.com/attachments/1155238663953862718/1346842176092639293/11.jpg?ex=67c9a805&is=67c85685&hm=f993f65c70b0f5c41c2c5fed450f2bec3b17382e0ed989ff59108bef69856dd9&' },
+      { id: 12, src: 'https://cdn.discordapp.com/attachments/1155238663953862718/1346842200620793937/12.jpg?ex=67c9a80b&is=67c8568b&hm=f471cdd4a19881f00ae2328bd8e1afee70a3e344d4f549c2b56408168980bd85&' },
+      { id: 13, src: 'https://cdn.discordapp.com/attachments/1155238663953862718/1346842218777939978/13.jpg?ex=67c9a810&is=67c85690&hm=db2cfa00b64608c545f1b9808bd791827f181598185ed8aeb5faa58c5b607408&' },
+      { id: 14, src: 'https://cdn.discordapp.com/attachments/1155238663953862718/1346842252068130857/14.jpg?ex=67c9a818&is=67c85698&hm=ce9bb8e825b67e410634e94c9452f82382e48e6764fefd9b13f743bc05b61931&' },
+      { id: 15, src: 'https://cdn.discordapp.com/attachments/1155238663953862718/1346842287157678142/15.jpg?ex=67c9a820&is=67c856a0&hm=bd46a3713b28f4b5c10a3b9b4449cd7cdc3178c21865f184e55472c98e353777&' },
+      { id: 16, src: 'https://cdn.discordapp.com/attachments/1155238663953862718/1346842317298073620/16.jpg?ex=67c9a827&is=67c856a7&hm=92342fbe3b71a909c153fd69777bdab638efacfc4f32b6acff08791e477faade&' },
+      { id: 17, src: 'https://cdn.discordapp.com/attachments/1155238663953862718/1346842317658787882/17.jpg?ex=67c9a827&is=67c856a7&hm=30c1ef03d8fb8144aa5f6393966d0023c3b8ae4dbc14c2dd3deaf74c3f3f613a&' },
+      { id: 18, src: 'https://media.discordapp.net/attachments/1155238663953862718/1346842512505049108/18.jpg?ex=67c9a856&is=67c856d6&hm=eef46470d5d8280e79670327807ed6dc1e474faf790702ce72d9ccb20dedb7bb&=&format=webp&width=642&height=856' },
+      { id: 19, src: 'https://cdn.discordapp.com/attachments/1155238663953862718/1346842513280860203/19.jpg?ex=67c9a856&is=67c856d6&hm=b982f797034c428e7474cd421ef6799f6bd2cec0b0fe11a5ff0ed7887c4b5dd2&' },
+      { id: 20, src: 'https://cdn.discordapp.com/attachments/1155238663953862718/1346842513767530558/20.jpg?ex=67c9a856&is=67c856d6&hm=714f17e0f7758bda0f6ae122e92a1273b5019b8a3a1fc0bdb9660eab8c5d0064&' },
+      { id: 21, src: 'https://cdn.discordapp.com/attachments/1155238663953862718/1346842514157604904/21.jpg?ex=67c9a856&is=67c856d6&hm=fb4b5329164db9301962f53268de7c6dab2ffc90700d0b477dc8d444a0b3c7e1&' },
     ]);
 
     const captions = ref([
-      'Slide 1: Welcome to the gallery!',
-      'Slide 2: Highlights of the journey.',
-      'Slide 3: Moments captured in time.',
-    ]);
+    'Welcome to the gallery!🤎🥐',
+    'Luv these photos <3 💌📸',
+    'Proof I’m not friendless 🦢🎞️ (🤨🤨🤨)',
+    'Got to see NIKI live!! (this is why I was born, my whole life has led up to this moment)🎀🎤',
+    'Just another day in the archives. 🩰🍰',
+    "Keychains, trinkets, and whatever else I collect for no reason (this is cheaper than therapy) 🔑💌",
+    'Photobooths hate to see us coming.📸',
+]);
 
     const currentIndex = ref(0);
     const itemsPerSlide = 3;
